@@ -1,3 +1,4 @@
+import { ProposalModule } from './modules/proposal/proposal.module';
 import { SharedModule } from './shared/shared.module';
 import { ApiConfigService } from './shared/services/api-config.service';
 import { AuthModule } from './modules/auth/auth.module';
@@ -9,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     AuthModule,
+    ProposalModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',

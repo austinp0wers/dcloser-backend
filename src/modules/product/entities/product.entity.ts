@@ -1,4 +1,5 @@
-import { UserEntity } from './../user/user.entity';
+import { BusinessEntity } from '../../user/business/business.entity';
+import { UserEntity } from '../../user/user.entity';
 import {
   Column,
   Entity,
@@ -8,31 +9,25 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from 'typeorm';
 
-@Entity({ name: 'proposals' })
-export class ProposalEntity {
+@Entity({ name: 'products' })
+export class ProductEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ type: String, nullable: true })
-  customerCompanyRep: string;
 
   @OneToMany(() => UserEntity, (userEntity) => userEntity.id)
   @JoinColumn({ name: 'user_id' })
   user_id: UserEntity[];
 
-  @Column({})
-  customerCompanyId: string;
+  @Column({ nullable: true, type: String })
+  name: string;
 
-  @Column({ type: String, nullable: true })
-  paidPeriod: string;
-
-  @Column({ type: Number, nullable: true })
-  totalPaymentPrice: number;
-
-  @Column({ type: String, nullable: true })
-  status: string;
+  // business entity의 id랑 join.
+  @ManyToOne(() => BusinessEntity)
+  @JoinColumn({ name: 'business_id' })
+  businessId: BusinessEntity;
 
   @CreateDateColumn()
   created_at: Date;

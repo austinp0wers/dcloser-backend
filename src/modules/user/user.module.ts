@@ -1,3 +1,4 @@
+import { BusinessEntity } from './business/business.entity';
 import { UserEntity } from './user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
@@ -6,7 +7,7 @@ import { UserController } from './user.controller';
 import { Module } from '@nestjs/common';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity])],
+  imports: [TypeOrmModule.forFeature([UserEntity, BusinessEntity])],
   controllers: [UserController],
   providers: [UserService, UserRepository],
   exports: [UserService, UserRepository],

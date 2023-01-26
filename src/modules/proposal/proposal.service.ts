@@ -6,7 +6,7 @@ export class ProposalService {
 
   public async saveProposal(proposalBody) {
     if (!proposalBody) return 'nothing to save';
-    console.log('proposalBody', proposalBody);
+
     const proposalId = proposalBody.id ? proposalBody.id : null;
 
     return await this.proposalRepo.updateProposal(proposalId, proposalBody);

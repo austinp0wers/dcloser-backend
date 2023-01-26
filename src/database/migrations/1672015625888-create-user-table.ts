@@ -1,6 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class createUserTable1672015625888 implements MigrationInterface {
+  // id 는 Uuid 타입으로 수정.
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "CREATE TYPE \"users_role_enum\" AS ENUM('USER', 'ADMIN')",
