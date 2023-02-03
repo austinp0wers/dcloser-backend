@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-export class CustomInternalErrorException extends HttpException {
+export class CustomInternalException extends HttpException {
   constructor(error: any) {
     super(
       { code: 500, error, level: 'error' },
