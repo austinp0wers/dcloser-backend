@@ -36,13 +36,18 @@ export class AuthService {
     return user;
   }
 
-  async createAccessToken(loginData: { role: UserRoleEnum; userId: number }) {
+  async createAccessToken(loginData: {
+    role: UserRoleEnum;
+    user_id: string;
+    business_id: number;
+  }) {
     return new TokenPayloadDto({
       expiresIn: this.configService.authConfig.jwtExpirationTime,
       accessToken: await this.jwtService.signAsync({
-        userId: loginData.userId,
+        user_id: loginData.user_id,
         type: TokenTypes.ACCESS_TOKEN,
         role: loginData.role,
+        business_id: loginData.business_id,
       }),
     });
   }

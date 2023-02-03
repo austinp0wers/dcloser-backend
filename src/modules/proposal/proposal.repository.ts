@@ -10,11 +10,57 @@ export class ProposalRepository {
     private proposalRepository: Repository<ProposalEntity>,
   ) {}
 
-  public async updateProposal(proposalId, proposalBody) {
-    this.proposalRepository.save({ id: proposalId, ...proposalBody });
+  public async findProposalById(business_id: any) {
+    return await this.proposalRepository
+      .createQueryBuilder()
+      .select('proposals')
+      .from(ProposalEntity, 'proposals')
+      .where('proposals.id = :id', { id: business_id })
+      .getOne();
   }
 
-  public async findProposals() {
-    this.proposalRepository.find({});
+  public async updateProposal(proposalBody: ProposalEntity): Promise<any> {
+    return await this.proposalRepository
+      .createQueryBuilder()
+      .insert()
+      .into(ProposalEntity, [
+        'id',
+        'proposal_title',
+        'customer_company_rep',
+        'business_id',
+        'business_user_id',
+        'customer_company_id',
+        'paid_period',
+        'total_payment_price',
+        'service_period_id',
+        'status',
+      ])
+      .values(proposalBody)
+      .orUpdate(
+        [
+          'proposal_title',
+          'customer_company_rep',
+          'business_id',
+          'business_user_id',
+          'customer_company_id',
+          'paid_period',
+          'total_payment_price',
+          'service_period_id',
+          'status',
+          'updated_at',
+        ],
+        ['id'],
+      )
+      .execute();
+  }
+
+  // users테이블에서 A = 해당 userId를 가진 column 이 가진 business_id 로
+  // where proposals.business_id = A
+  public async findProposals(business_id) {
+    return await this.proposalRepository
+      .createQueryBuilder('proposals')
+      .where('proposals.business_id = :business_id', { business_id })
+      .orderBy('id', 'DESC')
+      .getMany();
   }
 }

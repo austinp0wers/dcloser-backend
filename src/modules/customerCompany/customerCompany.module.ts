@@ -7,4 +7,4 @@ import { Module } from '@nestjs/common';
   exports: [],
   controllers: [],
 })
-export class ProductModule {}
+export class CustomerCompanyModule {}

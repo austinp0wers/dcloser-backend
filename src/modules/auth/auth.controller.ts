@@ -1,3 +1,4 @@
+import { UserEntity } from './../user/user.entity';
 import { UserService } from './../user/user.service';
 import { RegisterResponseDto } from './dtos/registerResponse.dto';
 import { RegisterDataDto } from './dtos/registerData.dto';
@@ -24,10 +25,11 @@ export class AuthController {
 
   @Post('login')
   async userLogin(@Req() req, @Res() res, @Body() loginDataDto: LoginDataDto) {
-    const user = await this.authService.validateUser(loginDataDto);
+    const user: UserEntity = await this.authService.validateUser(loginDataDto);
     const access_token = await this.authService.createAccessToken({
       role: user.role,
-      userId: user.id,
+      user_id: user.id,
+      business_id: user.business_id,
     });
 
     return res.json(
