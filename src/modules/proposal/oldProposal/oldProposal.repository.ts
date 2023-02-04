@@ -23,7 +23,7 @@ export class OldProposalRepository {
         'customer_company_id',
         'paid_period',
         'total_payment_price',
-        'service_period_id',
+        'expire_at',
         'status',
       ])
       .values(oldProposal)

@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsNotEmpty,
   IsArray,
+  IsDate,
 } from 'class-validator';
 export class ReqCreateProposalDto {
   @IsInt()
@@ -36,9 +37,9 @@ export class ReqCreateProposalDto {
   @IsOptional()
   total_payment_price: number;
 
-  @IsInt()
+  @IsDate()
   @IsOptional()
-  service_period_id: number;
+  expire_at: Date;
 
   @IsEnum(ProposalStatusEnum)
   @IsOptional()

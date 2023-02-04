@@ -1,5 +1,4 @@
 import { SaveProposalDto } from './dtos/saveProposal.dto';
-import { ServicePeriodEntity } from './servicePeriod/servicePeriod.entity';
 import { UserEntity } from './../user/user.entity';
 import { ProposalStatusEnum } from './enums/proposal.status.enum';
 import { BusinessEntity } from './../user/business/business.entity';
@@ -57,14 +56,8 @@ export class ProposalEntity {
   })
   status: string;
 
-  @OneToOne(() => ServicePeriodEntity)
-  @JoinColumn({
-    name: 'service_period',
-  })
-  service_period: number;
-
-  @Column({ type: Number, nullable: true })
-  service_period_id: number;
+  @Column({ type: Date, nullable: true })
+  expire_at: Date;
 
   @CreateDateColumn()
   created_at: Date;
@@ -82,7 +75,7 @@ export class ProposalEntity {
     proposal.customer_company_id = saveProposal.customer_company_id;
     proposal.paid_period = saveProposal.paid_period;
     proposal.total_payment_price = saveProposal.total_payment_price;
-    proposal.service_period_id = saveProposal.service_period_id;
+    proposal.expire_at = saveProposal.expire_at;
     proposal.business_user_id = saveProposal.business_user_id;
     proposal.status = saveProposal.status;
     proposal.business_id = saveProposal.business_id;

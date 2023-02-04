@@ -22,8 +22,11 @@ export class CustomerCompanyEntity {
 
   // business entity의 id랑 join.
   @ManyToOne(() => BusinessEntity)
-  @JoinColumn({ name: 'business_id' })
-  businessId: BusinessEntity;
+  @JoinColumn({ name: 'business' })
+  business: BusinessEntity;
+
+  @Column({ type: Number, nullable: false })
+  business_id: number;
 
   @CreateDateColumn()
   created_at: Date;

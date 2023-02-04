@@ -30,7 +30,7 @@ export class ProductsOfferedRepository {
       .where('products.id IN (:...productIds)', {
         productIds: await subQuery,
       })
-      .select('products.name')
+      .select('products.name', 'products.id')
       .getRawMany();
   }
 

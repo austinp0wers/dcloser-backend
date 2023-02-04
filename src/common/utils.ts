@@ -9,3 +9,9 @@ export async function validatePasswordHash(
   }
   return await bcrypt.compareSync(password, hash);
 }
+
+export function trimPipe(value: string): string {
+  if (typeof value === 'string') {
+    return value.replace(/ /g, '');
+  }
+}

@@ -1,7 +1,8 @@
+import { CustomerCompanyModule } from './../customerCompany/customerCompany.module';
+import { MailModule } from './mail/mail.module';
 import { UserModule } from './../user/user.module';
 import { OldProposalRepository } from './oldProposal/oldProposal.repository';
 import { OldProposalEntity } from './oldProposal/oldProposal.entity';
-import { ServicePeriodEntity } from './servicePeriod/servicePeriod.entity';
 import { ProposalController } from './proposal.controller';
 import { ProposalRepository } from './proposal.repository';
 import { ProposalService } from './proposal.service';
@@ -13,11 +14,9 @@ import { ProductModule } from '../product/product.module';
   imports: [
     UserModule,
     ProductModule,
-    TypeOrmModule.forFeature([
-      ProposalEntity,
-      ServicePeriodEntity,
-      OldProposalEntity,
-    ]),
+    MailModule,
+    CustomerCompanyModule,
+    TypeOrmModule.forFeature([ProposalEntity, OldProposalEntity]),
   ],
   providers: [ProposalService, ProposalRepository, OldProposalRepository],
   exports: [],
