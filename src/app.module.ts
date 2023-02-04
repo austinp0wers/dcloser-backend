@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthMiddleware } from './middlewares/auth.middleware';
+import emailConfigService from './shared/services/email-config.service';
 @Module({
   imports: [
     AuthModule,
@@ -14,6 +15,7 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+      load: [emailConfigService],
     }),
     TypeOrmModule.forRootAsync({
       imports: [SharedModule],

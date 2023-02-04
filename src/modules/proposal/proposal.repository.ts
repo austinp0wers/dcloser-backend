@@ -10,12 +10,16 @@ export class ProposalRepository {
     private proposalRepository: Repository<ProposalEntity>,
   ) {}
 
-  public async findProposalById(business_id: any) {
+  public async findProposalByProposalId(
+    proposal_id: number,
+  ): Promise<ProposalEntity> {
+    console.log('typeof', typeof proposal_id);
+    console.log('typeof', proposal_id);
     return await this.proposalRepository
       .createQueryBuilder()
       .select('proposals')
       .from(ProposalEntity, 'proposals')
-      .where('proposals.id = :id', { id: business_id })
+      .where('proposals.id = :proposal_id', { proposal_id })
       .getOne();
   }
 
@@ -32,7 +36,7 @@ export class ProposalRepository {
         'customer_company_id',
         'paid_period',
         'total_payment_price',
-        'service_period_id',
+        'expire_at',
         'status',
       ])
       .values(proposalBody)
@@ -45,7 +49,7 @@ export class ProposalRepository {
           'customer_company_id',
           'paid_period',
           'total_payment_price',
-          'service_period_id',
+          'expire_at',
           'status',
           'updated_at',
         ],

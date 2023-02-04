@@ -1,5 +1,4 @@
 import { ProposalEntity } from './../proposal.entity';
-import { ServicePeriodEntity } from './../servicePeriod/servicePeriod.entity';
 import { ProposalStatusEnum } from './../enums/proposal.status.enum';
 import { UserEntity } from './../../user/user.entity';
 import { BusinessEntity } from './../../user/business/business.entity';
@@ -61,14 +60,8 @@ export class OldProposalEntity {
   })
   status: string;
 
-  @OneToOne(() => ServicePeriodEntity)
-  @JoinColumn({
-    name: 'service_period',
-  })
-  service_period: number;
-
-  @Column({ type: Number, nullable: true })
-  service_period_id: number;
+  @Column({ type: Date, nullable: true })
+  expire_at: Date;
 
   @CreateDateColumn()
   created_at: Date;
