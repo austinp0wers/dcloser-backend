@@ -12,9 +12,9 @@ export class CustomerCompanyRepository {
   public async findCustomerCompanies(business_id: number) {
     return await this.customerCompanyRepo
       .createQueryBuilder()
-      .from(CustomerCompanyEntity, 'customerCompany')
-      .select('customerCompany')
-      .where('customerCompany.business_id = :business_id', { business_id })
+      .from(CustomerCompanyEntity, 'customer_company')
+      .select('customer_company')
+      .where('customer_company.business_id = :business_id', { business_id })
       .getMany();
   }
 

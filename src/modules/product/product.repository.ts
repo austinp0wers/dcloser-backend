@@ -10,7 +10,5 @@ export class ProductRepository {
     private productEntity: Repository<ProductEntity>,
   ) {}
 
-  public async findProducts() {
-    this.productEntity.find({});
-  }
+  public async findProducts() {}
 }

@@ -1,3 +1,4 @@
+import { CustomNotFoundException } from 'src/exceptions/customNotFound.exception';
 import { CustomInternalException } from './../../exceptions/customInternal.exception';
 import { ReqSendEmailToCustomerDto } from './dtos/request/send.email.to.customer.dto';
 import { MailService } from './mail/mail.service';
@@ -22,28 +23,46 @@ export class ProposalController {
     private proposalService: ProposalService,
     private readonly mailService: MailService,
   ) {}
-  @Get('/')
-  public async getProposalList(@Req() req, @Res() res) {
-    // user_id 에서 Business_id 조회
-    const business_id = req.user.business_id;
-    const getProposals = await this.proposalService.getProposalList(
-      business_id,
-    );
-    res.json({ ...getProposals });
-  }
 
-  @Get('/:proposalId')
+  @Get(':proposalId')
   public async getProposalById(@Req() req, @Res() res, @Param() proposalId) {
-    // proposalId 내용 조회
-    console.log('proposalId', proposalId.proposalId);
     const proposalInfo = await this.proposalService.findProposalById(
       Number(proposalId.proposalId),
     );
-    console.log('proposalInfo', proposalInfo);
+    if (!proposalInfo) {
+      throw new CustomNotFoundException('Proposal not found');
+    }
     res.json({ status: 'success', ...proposalInfo });
   }
 
-  @Post('/')
+  @Post('email')
+  public async sendEmailToCustomer(
+    @Req() req,
+    @Res() res,
+    @Body() reqSendToCustomerInfo: ReqSendEmailToCustomerDto,
+  ) {
+    const { business_id, user_id } = req.user;
+
+    const savedProposal = await this.proposalService.saveProposal(
+      reqSendToCustomerInfo.proposalData,
+      business_id,
+      user_id,
+    );
+    if (!savedProposal) {
+      throw new CustomInternalException('Save proposal failed');
+    }
+    const result = await this.mailService.sendMail(
+      reqSendToCustomerInfo.clientEmail,
+      user_id,
+      savedProposal.identifiers[0].id,
+    );
+    if (result.rejected.length >= 1) {
+      throw new CustomInternalException('internal server error');
+    }
+    res.json({ status: 'success', code: 200 });
+  }
+
+  @Post('')
   public async saveProposal(
     @Req() req,
     @Res() res,
@@ -58,29 +77,14 @@ export class ProposalController {
     res.json({ savedProposal });
   }
 
-  @Post('/email')
-  public async sendEmailToCustomer(
-    @Req() req,
-    @Res() res,
-    @Body() reqSendToCustomerInfo: ReqSendEmailToCustomerDto,
-  ) {
-    const { business_id, user_id } = req.user;
-
-    const savedProposal = await this.proposalService.saveProposal(
-      reqSendToCustomerInfo.reqCreateProposal,
+  @Get('')
+  public async getProposalList(@Req() req, @Res() res) {
+    // user_id 에서 Business_id 조회
+    const business_id = req.user.business_id;
+    const getProposals = await this.proposalService.getProposalList(
       business_id,
-      user_id,
     );
-
-    console.log('savedProposal', savedProposal);
-    const result = await this.mailService.sendMail(
-      reqSendToCustomerInfo.clientEmail,
-    );
-    if (result.rejected.length >= 1) {
-      throw new CustomInternalException('internal server error');
-    }
-
-    res.json({ status: 'success', code: 200 });
+    res.json({ ...getProposals });
   }
 
   // @Post('/internal')

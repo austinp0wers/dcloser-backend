@@ -9,5 +9,5 @@ export class ReqSendEmailToCustomerDto {
   readonly clientEmail: string[];
 
   @IsNotEmpty()
-  reqCreateProposal: ReqCreateProposalDto;
+  proposalData: ReqCreateProposalDto;
 }
