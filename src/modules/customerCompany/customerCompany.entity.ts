@@ -1,10 +1,8 @@
 import { BusinessEntity } from './../user/business/business.entity';
-import { UserEntity } from './../user/user.entity';
 import {
   Column,
   Entity,
   JoinColumn,
-  OneToMany,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   DeleteDateColumn,
@@ -12,7 +10,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 
-@Entity({ name: 'customerCompany' })
+@Entity({ name: 'customer_company' })
 export class CustomerCompanyEntity {
   @PrimaryGeneratedColumn()
   id: number;

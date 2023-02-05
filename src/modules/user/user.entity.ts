@@ -47,6 +47,9 @@ export class UserEntity {
     this.password = await bcrypt.hash(this.password, salt);
   }
 
+  @Column({ type: String, nullable: true, default: 'pending' })
+  verified_status: string;
+
   @CreateDateColumn()
   created_at: Date;
 

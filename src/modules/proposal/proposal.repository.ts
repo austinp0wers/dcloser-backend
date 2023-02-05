@@ -51,7 +51,6 @@ export class ProposalRepository {
           'total_payment_price',
           'expire_at',
           'status',
-          'updated_at',
         ],
         ['id'],
       )

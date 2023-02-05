@@ -9,7 +9,6 @@ import { ProposalEntity } from './proposal.entity';
 import { SaveProposalDto } from './dtos/saveProposal.dto';
 import { ProposalRepository } from './proposal.repository';
 import { Injectable } from '@nestjs/common';
-import { response } from 'express';
 @Injectable()
 export class ProposalService {
   constructor(
@@ -110,7 +109,7 @@ export class ProposalService {
     // 고객사 정보 조회 & map
     const customerCompanyName =
       await this.customerCompanyRepo.findCustomerCompanies(business_id);
-
+    console.log('customerCompanyName', customerCompanyName);
     if (customerCompanyName.length >= 1) {
       for (let i = 0; i < userNameList.length; i++) {
         customerNameAndId.set(

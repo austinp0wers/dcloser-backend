@@ -1,9 +1,15 @@
+import { CustomInternalException } from './../../../exceptions/customInternal.exception';
+import { ReqSaveMailSentDto } from './dtos/request/save.mail.sent.dto';
+import { MailRepository } from './mail.repository';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConflictException, Injectable } from '@nestjs/common';
-
+import { recommendProposalHtml } from './htmls/recommend.proposal';
 @Injectable()
 export class MailService {
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(
+    private readonly mailerService: MailerService,
+    private readonly mailRepo: MailRepository,
+  ) {}
 
   async sendHello(): Promise<boolean> {
     await this.mailerService
@@ -24,22 +30,34 @@ export class MailService {
     return true;
   }
 
-  async sendMail(clientEmail: string[]): Promise<any> {
-    return await this.mailerService
-      .sendMail({
-        to: clientEmail,
-        from: '"dcloser" <llkpartners1210@gmail.com>',
-        subject: 'Testing',
-        text: 'is this working?',
-        html: '<div><b>서비스 제안</b></div><div><span>서비스 조건</span><span>시작일자</span><span>종료일자</span></div>',
-      })
-      .then((result) => {
-        console.log('result', result);
-      })
+  async sendMail(
+    clientEmail: string[],
+    business_user_id: string,
+    proposal_id: number,
+  ): Promise<any> {
+    const saveResult = await this.mailerService.sendMail({
+      to: clientEmail,
+      from: '"DCLOSER" <llkpartners1210@gmail.com>',
+      subject: '견적서가 도착했습니다',
+      html: recommendProposalHtml({
+        fromName: '테스트',
+        fromEmail: 'llkpartners1210@gmail.com',
+        toName: '오스틴',
+        toEmail: 'test@gmail.com',
+      }),
+    });
+
+    const reqSaveMailSentDto: ReqSaveMailSentDto = {
+      business_user_id,
+      proposal_id,
+    };
+    this.mailRepo
+      .saveMailSent(reqSaveMailSentDto)
+      .then()
       .catch((error) => {
-        console.log('error', error.message);
-        new ConflictException(error);
+        console.log('error', error);
+        throw new CustomInternalException('Save Mail Sent Exception');
       });
-    return true;
+    return saveResult;
   }
 }
