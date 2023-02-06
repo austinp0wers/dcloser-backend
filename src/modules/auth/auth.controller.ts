@@ -1,3 +1,4 @@
+import { ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './../user/user.entity';
 import { UserService } from './../user/user.service';
 import { RegisterResponseDto } from './dtos/registerResponse.dto';
@@ -16,6 +17,7 @@ import {
 } from '@nestjs/common';
 
 @Controller('auth')
+@ApiTags('auth')
 @UseInterceptors(new ResponseInterceptor())
 export class AuthController {
   constructor(

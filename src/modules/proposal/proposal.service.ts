@@ -109,7 +109,6 @@ export class ProposalService {
     // 고객사 정보 조회 & map
     const customerCompanyName =
       await this.customerCompanyRepo.findCustomerCompanies(business_id);
-    console.log('customerCompanyName', customerCompanyName);
     if (customerCompanyName.length >= 1) {
       for (let i = 0; i < userNameList.length; i++) {
         customerNameAndId.set(
