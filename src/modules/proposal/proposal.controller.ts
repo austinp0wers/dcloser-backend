@@ -1,3 +1,4 @@
+import { ResSaveProposalDto } from './dtos/response/save.proposal.dto';
 import { CustomNotFoundException } from 'src/exceptions/customNotFound.exception';
 import { CustomInternalException } from './../../exceptions/customInternal.exception';
 import { ReqSendEmailToCustomerDto } from './dtos/request/send.email.to.customer.dto';
@@ -15,8 +16,10 @@ import {
   UseInterceptors,
   Param,
 } from '@nestjs/common';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('proposal')
+@ApiTags('proposal')
 @UseInterceptors(new ResponseInterceptor())
 export class ProposalController {
   constructor(
@@ -63,6 +66,10 @@ export class ProposalController {
   }
 
   @Post('')
+  @ApiOkResponse({
+    type: ResSaveProposalDto,
+    description: 'Successfully Saved',
+  })
   public async saveProposal(
     @Req() req,
     @Res() res,
@@ -74,7 +81,9 @@ export class ProposalController {
       business_id,
       user_id,
     );
-    res.json({ savedProposal });
+    res.json(
+      new ResSaveProposalDto({ success: true, code: 200 }, 'Create Successful'),
+    );
   }
 
   @Get('')

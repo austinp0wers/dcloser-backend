@@ -1,3 +1,4 @@
+import { ApiTags } from '@nestjs/swagger';
 import { ResponseInterceptor } from './../../interceptors/response.interceptor';
 import { CustomNotFoundException } from 'src/exceptions/customNotFound.exception';
 import { CustomerCompanyService } from './customerCompany.service';
@@ -13,6 +14,7 @@ import {
 } from '@nestjs/common';
 
 @Controller('customer-company')
+@ApiTags('customer-company')
 @UseInterceptors(new ResponseInterceptor())
 export class CustomerCompanyController {
   constructor(private customerCompanyService: CustomerCompanyService) {}
