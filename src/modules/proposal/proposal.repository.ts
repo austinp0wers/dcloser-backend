@@ -13,8 +13,6 @@ export class ProposalRepository {
   public async findProposalByProposalId(
     proposal_id: number,
   ): Promise<ProposalEntity> {
-    console.log('typeof', typeof proposal_id);
-    console.log('typeof', proposal_id);
     return await this.proposalRepository
       .createQueryBuilder()
       .select('proposals')

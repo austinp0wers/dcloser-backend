@@ -1,3 +1,4 @@
+import { CustomBadRequestException } from './../../exceptions/customBadRequest.exception';
 import { CustomerCompanyRepository } from './../customerCompany/customerCompany.repository';
 import { ProductsOfferedRepository } from './../product/offeredProducts/productsOffered.repository';
 import { UserEntity } from './../user/user.entity';
@@ -23,6 +24,11 @@ export class ProposalService {
     const proposalInfo: any = await this.proposalRepo.findProposalByProposalId(
       proposal_id,
     );
+
+    if (!proposalInfo) {
+      throw new CustomBadRequestException('Proposal not found');
+    }
+
     // customer company details
     if (proposalInfo.customer_company_id) {
       const customerDetail =

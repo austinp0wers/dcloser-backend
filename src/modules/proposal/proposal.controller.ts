@@ -32,9 +32,7 @@ export class ProposalController {
     const proposalInfo = await this.proposalService.findProposalById(
       Number(proposalId.proposalId),
     );
-    if (!proposalInfo) {
-      throw new CustomNotFoundException('Proposal not found');
-    }
+
     res.json({ status: 'success', ...proposalInfo });
   }
 
@@ -52,7 +50,7 @@ export class ProposalController {
       user_id,
     );
     if (!savedProposal) {
-      throw new CustomInternalException('Save proposal failed');
+      throw new CustomInternalException('Create proposal failed');
     }
     const result = await this.mailService.sendMail(
       reqSendToCustomerInfo.clientEmail,
@@ -81,6 +79,9 @@ export class ProposalController {
       business_id,
       user_id,
     );
+    if (!savedProposal) {
+      throw new CustomInternalException('Create Proposal Failed');
+    }
     res.json(
       new ResSaveProposalDto({ success: true, code: 200 }, 'Create Successful'),
     );
