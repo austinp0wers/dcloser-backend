@@ -74,12 +74,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
       const errorLine: string = exceptionRes.errorLine || '';
 
       this.slackService.sendMessage(
-        this.slackService.getMessgeContents({
-          headers,
-          errorMessage: errorLog,
-          errorLine,
-          exception,
-        }),
+        JSON.stringify(exception.stack),
+        // this.slackService.getMessgeContents({
+        //   headers,
+        //   errorMessage: errorLog,
+        //   errorLine,
+        //   exception,
+        // }),
       );
       //   }
 
