@@ -1,3 +1,4 @@
+import { ReqSaveCustomerCompanyDto } from './dtos/request/req.save.customerCompany.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ResponseInterceptor } from './../../interceptors/response.interceptor';
 import { CustomNotFoundException } from 'src/exceptions/customNotFound.exception';
@@ -19,12 +20,9 @@ import {
 export class CustomerCompanyController {
   constructor(private customerCompanyService: CustomerCompanyService) {}
 
-  @Get(':business_id')
-  public async getCustomerCompanies(
-    @Req() req,
-    @Res() res,
-    @Param() business_id,
-  ) {
+  @Get()
+  public async getCustomerCompanies(@Req() req, @Res() res) {
+    const { business_id } = req.user;
     const customerCompanies =
       await this.customerCompanyService.findCustomerCompanies(business_id);
 
@@ -39,6 +37,15 @@ export class CustomerCompanyController {
   public async saveCustomerCompanies(
     @Req() req,
     @Res() res,
-    @Body() saveCustomerCompanyDto,
-  ) {}
+    @Body() reqSaveCustomerCompanyDto: ReqSaveCustomerCompanyDto,
+  ) {
+    const { business_id } = req.user;
+
+    await this.customerCompanyService.saveCustomerCompany(
+      reqSaveCustomerCompanyDto,
+      business_id,
+    );
+
+    res.json({ code: 200, status: 'success' });
+  }
 }

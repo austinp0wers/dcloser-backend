@@ -28,4 +28,18 @@ export class CustomerCompanyRepository {
       })
       .getOne();
   }
+
+  public async saveCustomerCompany(saveCustomerCompanyDto) {
+    return await this.customerCompanyRepo
+      .createQueryBuilder()
+      .insert()
+      .into(CustomerCompanyEntity)
+      .values([
+        {
+          name: saveCustomerCompanyDto.name,
+          business_id: saveCustomerCompanyDto.business_id,
+        },
+      ])
+      .execute();
+  }
 }

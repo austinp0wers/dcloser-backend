@@ -18,11 +18,6 @@ export class CustomerCompanyEntity {
   @Column({ nullable: true, type: String })
   name: string;
 
-  // business entity의 id랑 join.
-  @ManyToOne(() => BusinessEntity)
-  @JoinColumn({ name: 'business' })
-  business: BusinessEntity;
-
   @Column({ type: Number, nullable: false })
   business_id: number;
 

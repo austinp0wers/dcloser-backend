@@ -59,24 +59,7 @@ export class ProposalService {
       business_user_id,
     };
     const proposal: ProposalEntity = ProposalEntity.create(saveProposalDto);
-    if (saveProposalDto.id) {
-      const pastProposal = await this.proposalRepo.findProposalByProposalId(
-        proposal.id,
-      );
-      const oldProposal: InsertOldProposalDto = {
-        proposal_id: pastProposal.id,
-        ...pastProposal,
-      };
-      if (pastProposal) {
-        this.oldProposalRepo
-          .insertOldProposal(oldProposal)
-          .then()
-          .catch((err) => console.log(err.message));
-      }
-    }
-    const updateProposalResult = await this.proposalRepo.updateProposal(
-      proposal,
-    );
+    const updateProposalResult = await this.proposalRepo.saveProposal(proposal);
 
     // products_offered DB에 선택된 제품들 저장하기.
     for (let i = 0; i < proposalBody.products_id.length; i++) {
@@ -103,7 +86,9 @@ export class ProposalService {
     for (let i = 0; i < proposalList.length; i++) {
       userIdList.push(proposalList[i].business_user_id);
     }
-
+    if (userIdList.length < 1) {
+      return [];
+    }
     // 작성한 담당자 이름 조회 & map
     const userNameList: UserEntity[] =
       await this.userRepository.findUserNameByIds(userIdList);

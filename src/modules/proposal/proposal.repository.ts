@@ -21,37 +21,24 @@ export class ProposalRepository {
       .getOne();
   }
 
-  public async updateProposal(proposalBody: ProposalEntity): Promise<any> {
+  public async saveProposal(proposalBody: ProposalEntity): Promise<any> {
     return await this.proposalRepository
       .createQueryBuilder()
       .insert()
-      .into(ProposalEntity, [
-        'id',
-        'proposal_title',
-        'customer_company_rep',
-        'business_id',
-        'business_user_id',
-        'customer_company_id',
-        'paid_period',
-        'total_payment_price',
-        'expire_at',
-        'status',
+      .into(ProposalEntity)
+      .values([
+        {
+          proposal_title: proposalBody.proposal_title,
+          customer_company_rep: proposalBody.customer_company_rep,
+          business_id: proposalBody.business_id,
+          business_user_id: proposalBody.business_user_id,
+          customer_company_id: proposalBody.customer_company_id,
+          paid_period: proposalBody.paid_period,
+          total_payment_price: proposalBody.total_payment_price,
+          expire_at: proposalBody.expire_at,
+          status: proposalBody.status,
+        },
       ])
-      .values(proposalBody)
-      .orUpdate(
-        [
-          'proposal_title',
-          'customer_company_rep',
-          'business_id',
-          'business_user_id',
-          'customer_company_id',
-          'paid_period',
-          'total_payment_price',
-          'expire_at',
-          'status',
-        ],
-        ['id'],
-      )
       .execute();
   }
 

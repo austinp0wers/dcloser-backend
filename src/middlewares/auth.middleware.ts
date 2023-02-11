@@ -26,7 +26,7 @@ export class AuthMiddleware implements NestMiddleware {
       throw new CustomInternalException(err);
     }
     req.user = {
-      user_id: decoded.user_id,
+      business_user_id: decoded.user_id,
       role: decoded.role,
       business_id: decoded.business_id,
     };

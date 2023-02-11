@@ -1,3 +1,5 @@
+import { SaveProductDto } from './../dtos/save.product.dto';
+import { ProductPriceEntity } from './productPrice.entity';
 import { BusinessEntity } from '../../user/business/business.entity';
 import { UserEntity } from '../../user/user.entity';
 import {
@@ -19,7 +21,7 @@ export class ProductEntity {
 
   @OneToMany(() => UserEntity, (userEntity) => userEntity.id)
   @JoinColumn({ name: 'user_id' })
-  user_id: UserEntity[];
+  business_user_id: string;
 
   @Column({ nullable: true, type: String })
   name: string;
@@ -27,7 +29,7 @@ export class ProductEntity {
   // business entity의 id랑 join.
   @ManyToOne(() => BusinessEntity)
   @JoinColumn({ name: 'business_id' })
-  businessId: BusinessEntity;
+  business_id: number;
 
   @CreateDateColumn()
   created_at: Date;
@@ -37,4 +39,13 @@ export class ProductEntity {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  static create(saveProduct: SaveProductDto) {
+    const product = new ProductEntity();
+    product.business_id = saveProduct.business_id;
+    product.name = saveProduct.name;
+    product.business_user_id = saveProduct.business_user_id;
+
+    return product;
+  }
 }

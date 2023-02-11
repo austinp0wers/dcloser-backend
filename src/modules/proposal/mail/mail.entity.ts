@@ -1,8 +1,11 @@
+import { ProposalEntity } from './../proposal.entity';
 import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity({ name: 'mail_sent' })
@@ -21,6 +24,12 @@ export class MailSentEntity {
 
   @Column({ type: String, nullable: false })
   business_user_id: string;
+
+  @Column({ type: String, nullable: false })
+  sent_to: string;
+
+  @Column({ type: String, nullable: false })
+  sent_email: string;
 
   @Column({ type: Number, nullable: false })
   proposal_id: number;

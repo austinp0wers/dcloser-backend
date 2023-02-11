@@ -69,9 +69,9 @@ export class ApiConfigService {
       username: this.getString('DB_USERNAME'),
       password: this.getString('DB_PASSWORD'),
       database: this.getString('DB_DATABASE'),
-      synchronize: true,
+      // synchronize: true,
       logging: true,
-      // migrationsRun: true,
+      migrationsRun: true,
       namingStrategy: new SnakeNamingStrategy(),
     };
   }

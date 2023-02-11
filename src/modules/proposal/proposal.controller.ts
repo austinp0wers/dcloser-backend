@@ -1,5 +1,4 @@
 import { ResSaveProposalDto } from './dtos/response/save.proposal.dto';
-import { CustomNotFoundException } from 'src/exceptions/customNotFound.exception';
 import { CustomInternalException } from './../../exceptions/customInternal.exception';
 import { ReqSendEmailToCustomerDto } from './dtos/request/send.email.to.customer.dto';
 import { MailService } from './mail/mail.service';
@@ -42,19 +41,20 @@ export class ProposalController {
     @Res() res,
     @Body() reqSendToCustomerInfo: ReqSendEmailToCustomerDto,
   ) {
-    const { business_id, user_id } = req.user;
+    const { business_id, business_user_id } = req.user;
 
     const savedProposal = await this.proposalService.saveProposal(
       reqSendToCustomerInfo.proposalData,
       business_id,
-      user_id,
+      business_user_id,
     );
     if (!savedProposal) {
       throw new CustomInternalException('Create proposal failed');
     }
-    const result = await this.mailService.sendMail(
+    const result = await this.mailService.sendRequestMail(
       reqSendToCustomerInfo.clientEmail,
-      user_id,
+      reqSendToCustomerInfo.proposalData.customer_company_rep,
+      business_user_id,
       savedProposal.identifiers[0].id,
     );
     if (result.rejected.length >= 1) {
@@ -73,11 +73,11 @@ export class ProposalController {
     @Res() res,
     @Body() reqCreateProposal: ReqCreateProposalDto,
   ) {
-    const { business_id, user_id } = req.user;
+    const { business_id, business_user_id } = req.user;
     const savedProposal = await this.proposalService.saveProposal(
       reqCreateProposal,
       business_id,
-      user_id,
+      business_user_id,
     );
     if (!savedProposal) {
       throw new CustomInternalException('Create Proposal Failed');
@@ -94,7 +94,7 @@ export class ProposalController {
     const getProposals = await this.proposalService.getProposalList(
       business_id,
     );
-    res.json({ ...getProposals });
+    res.json({ success: true, code: 200, getProposals: { ...getProposals } });
   }
 
   // @Post('/internal')
