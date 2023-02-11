@@ -12,11 +12,6 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 export class SaveProposalDto {
   @ApiProperty()
-  @IsInt()
-  @IsOptional()
-  id: number;
-
-  @ApiProperty()
   @IsString()
   @Length(1, 128)
   customer_company_rep: string;

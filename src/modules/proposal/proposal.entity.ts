@@ -9,9 +9,6 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   DeleteDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-  OneToOne,
 } from 'typeorm';
 
 @Entity({ name: 'proposals' })
@@ -26,16 +23,8 @@ export class ProposalEntity {
   @Column({ type: String, nullable: true })
   customer_company_rep: string;
 
-  @ManyToOne(() => BusinessEntity, (businessEntity) => businessEntity.id)
-  @JoinColumn({ name: 'business' })
-  business: number;
-
   @Column({ type: Number, nullable: false })
   business_id: number;
-
-  @OneToOne(() => UserEntity, (userEntity) => userEntity.id)
-  @JoinColumn({ name: 'business_user' })
-  business_user: string;
 
   @Column({ type: String, nullable: false })
   business_user_id: string;
@@ -67,7 +56,6 @@ export class ProposalEntity {
 
   static create(saveProposal: SaveProposalDto) {
     const proposal = new ProposalEntity();
-    proposal.id = saveProposal.id;
     proposal.customer_company_rep = saveProposal.customer_company_rep;
     proposal.customer_company_id = saveProposal.customer_company_id;
     proposal.paid_period = saveProposal.paid_period;

@@ -6,6 +6,7 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
+  BadRequestException,
 } from '@nestjs/common';
 import { catchError, Observable } from 'rxjs';
 import { CustomUnauthorizedException } from 'src/exceptions/customUnauthorizedError.exception';
@@ -20,7 +21,10 @@ export class ResponseInterceptor implements NestInterceptor {
   ): Observable<any> | Promise<Observable<any>> {
     return next.handle().pipe(
       catchError((error) => {
-        if (error instanceof CustomBadRequestException) {
+        if (
+          error instanceof CustomBadRequestException ||
+          error instanceof BadRequestException
+        ) {
           throw error;
         }
         if (error instanceof CustomNotFoundException) {

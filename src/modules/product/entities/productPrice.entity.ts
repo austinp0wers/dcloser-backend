@@ -1,3 +1,4 @@
+import { SaveProductPriceDto } from './../dtos/save.productPrice.dto';
 import { ProductEntity } from './product.entity';
 import {
   Column,
@@ -10,7 +11,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 
-@Entity({ name: 'productPrice' })
+@Entity({ name: 'product_prices' })
 export class ProductPriceEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -18,13 +19,10 @@ export class ProductPriceEntity {
   // business entity의 id랑 join.
   @ManyToOne(() => ProductEntity)
   @JoinColumn({ name: 'product_id' })
-  product_id: ProductEntity;
+  product_id: number;
 
   @Column({ nullable: true, type: Number })
   price: number;
-
-  @Column({})
-  product_duration: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -34,4 +32,12 @@ export class ProductPriceEntity {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  static create(saveProductPrice: SaveProductPriceDto) {
+    const productPrice = new ProductPriceEntity();
+    productPrice.price = saveProductPrice.price;
+    productPrice.product_id = saveProductPrice.product_id;
+
+    return productPrice;
+  }
 }

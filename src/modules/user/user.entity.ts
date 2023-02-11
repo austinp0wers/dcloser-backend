@@ -13,7 +13,7 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcryptjs';
-@Entity({ name: 'users' })
+@Entity({ name: 'business_users' })
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -23,10 +23,6 @@ export class UserEntity {
 
   @Column({ nullable: false, unique: true })
   email: string;
-
-  @ManyToOne(() => BusinessEntity)
-  @JoinColumn({ name: 'business' })
-  business: number;
 
   @Column({ type: Number, nullable: false })
   business_id: number;

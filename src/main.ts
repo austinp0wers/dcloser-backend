@@ -16,7 +16,8 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       transform: true,
-      dismissDefaultMessages: true,
+      forbidNonWhitelisted: true,
+      // dismissDefaultMessages: true,
     }),
   );
 

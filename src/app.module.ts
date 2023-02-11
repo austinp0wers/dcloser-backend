@@ -39,5 +39,7 @@ import { APP_FILTER } from '@nestjs/core';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes('/proposal');
+    consumer.apply(AuthMiddleware).forRoutes('/product');
+    consumer.apply(AuthMiddleware).forRoutes('/customer-company');
   }
 }

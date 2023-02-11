@@ -13,11 +13,6 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 export class ReqCreateProposalDto {
-  @ApiProperty()
-  @IsInt()
-  @IsOptional()
-  id: number;
-
   @ApiProperty({ maxLength: 128 })
   @IsString()
   @MaxLength(128)
