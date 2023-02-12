@@ -1,3 +1,5 @@
+import { UserService } from './../user/user.service';
+import { BusinessService } from './../user/business/business.service';
 import { S3Service } from './../../shared/services/s3.service';
 import { ResSaveProposalDto } from './dtos/response/save.proposal.dto';
 import { CustomInternalException } from './../../exceptions/customInternal.exception';
@@ -28,6 +30,8 @@ export class ProposalController {
     private proposalService: ProposalService,
     private readonly mailService: MailService,
     private readonly s3Service: S3Service,
+    private readonly businessService: BusinessService,
+    private readonly userService: UserService,
   ) {}
 
   @Get(':proposalId')
@@ -49,6 +53,14 @@ export class ProposalController {
   ) {
     const { business_id, business_user_id } = req.user;
 
+    const businessDetails = await this.businessService.findBusinessById(
+      Number(business_id),
+    );
+
+    const businessUserDetails = await this.userService.findUserById(
+      business_user_id,
+    );
+
     if (typeof reqSendToCustomerInfo.proposalData === 'string') {
       reqSendToCustomerInfo.proposalData = JSON.parse(
         reqSendToCustomerInfo.proposalData,
@@ -60,22 +72,24 @@ export class ProposalController {
       business_user_id,
     );
 
-    await this.s3Service.uploadFile(file, savedProposal.identifiers[0].id);
+    const fileName = `${businessDetails.name}견적서(${savedProposal.identifiers[0].id})`;
+    await this.s3Service.uploadFile(file, fileName);
     if (!savedProposal) {
       throw new CustomInternalException('Create proposal failed');
     }
 
-    const preSignedUrl = this.s3Service.generatePresignedUrl(
-      savedProposal.identifiers[0].id,
-    );
+    const presigned_url = this.s3Service.generatePresignedUrl(fileName);
 
-    const result = await this.mailService.sendRequestMail(
-      reqSendToCustomerInfo.clientEmail,
-      reqSendToCustomerInfo.proposalData.customer_company_rep,
+    const result = await this.mailService.sendRequestMail({
+      clientEmail: reqSendToCustomerInfo.clientEmail,
+      clientName: reqSendToCustomerInfo.proposalData.customer_company_rep,
       business_user_id,
-      savedProposal.identifiers[0].id,
-      preSignedUrl,
-    );
+      proposal_id: savedProposal.identifiers[0].id,
+      presigned_url,
+      business_name: businessDetails.name,
+      business_user_email: businessUserDetails.email,
+      business_user_name: businessUserDetails.name,
+    });
     if (result.rejected.length >= 1) {
       throw new CustomInternalException('internal server error');
     }

@@ -26,4 +26,8 @@ export class UserService {
 
     return user;
   }
+
+  public async findUserById(business_user_id) {
+    return await this.userRepository.findUserById(business_user_id);
+  }
 }

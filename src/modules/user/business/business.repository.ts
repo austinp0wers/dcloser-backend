@@ -9,7 +9,6 @@ export class BusinessRepository {
     private businessRepo: Repository<BusinessEntity>,
   ) {}
   public async saveBusiness(saveBusinessDto): Promise<any> {
-    console.log('saveBusinessDto', saveBusinessDto);
     return await this.businessRepo
       .createQueryBuilder()
       .insert()
@@ -31,7 +30,7 @@ export class BusinessRepository {
       .createQueryBuilder()
       .select('businesses')
       .from(BusinessEntity, 'businesses')
-      .where('id = :business_id', { business_id })
+      .where('businesses.id = :business_id', { business_id })
       .getOne();
   }
 }
