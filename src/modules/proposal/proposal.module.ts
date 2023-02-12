@@ -1,3 +1,4 @@
+import { S3Service } from './../../shared/services/s3.service';
 import { CustomerCompanyModule } from './../customerCompany/customerCompany.module';
 import { MailModule } from './mail/mail.module';
 import { UserModule } from './../user/user.module';
@@ -18,7 +19,12 @@ import { ProductModule } from '../product/product.module';
     CustomerCompanyModule,
     TypeOrmModule.forFeature([ProposalEntity, OldProposalEntity]),
   ],
-  providers: [ProposalService, ProposalRepository, OldProposalRepository],
+  providers: [
+    ProposalService,
+    ProposalRepository,
+    OldProposalRepository,
+    S3Service,
+  ],
   exports: [],
   controllers: [ProposalController],
 })

@@ -13,6 +13,6 @@ import { Module } from '@nestjs/common';
   imports: [TypeOrmModule.forFeature([UserEntity, BusinessEntity])],
   controllers: [UserController, BusinessController],
   providers: [UserService, UserRepository, BusinessService, BusinessRepository],
-  exports: [UserService, UserRepository],
+  exports: [UserService, UserRepository, BusinessService, BusinessRepository],
 })
 export class UserModule {}

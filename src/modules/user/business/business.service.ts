@@ -12,4 +12,8 @@ export class BusinessService {
   public async findBusinessList() {
     return await this.businessRepo.findBusinesses();
   }
+
+  public async findBusinessById(business_id) {
+    return await this.businessRepo.findBusinessById(business_id);
+  }
 }
