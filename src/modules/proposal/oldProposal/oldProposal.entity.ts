@@ -1,25 +1,15 @@
-import { ProposalEntity } from './../proposal.entity';
 import { ProposalStatusEnum } from './../enums/proposal.status.enum';
-import { UserEntity } from './../../user/user.entity';
-import { BusinessEntity } from './../../user/business/business.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  ManyToOne,
-  OneToOne,
 } from 'typeorm';
 
 @Entity({ name: 'old_proposals' })
 export class OldProposalEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @ManyToOne(() => ProposalEntity, (proposalEntity) => proposalEntity.id)
-  @JoinColumn({ name: 'proposal' })
-  proposal: number;
 
   @Column({ type: Number, nullable: false })
   proposal_id: number;
@@ -30,16 +20,8 @@ export class OldProposalEntity {
   @Column({ type: String, nullable: true })
   customer_company_rep: string;
 
-  @ManyToOne(() => BusinessEntity, (businessEntity) => businessEntity.id)
-  @JoinColumn({ name: 'business' })
-  business: number;
-
   @Column({ type: Number, nullable: false })
   business_id: number;
-
-  @OneToOne(() => UserEntity, (userEntity) => userEntity.id)
-  @JoinColumn({ name: 'business_user' })
-  business_user: string;
 
   @Column({ type: String, nullable: false })
   business_user_id: string;

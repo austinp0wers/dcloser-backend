@@ -43,8 +43,6 @@ export class ProposalRepository {
       .execute();
   }
 
-  // users테이블에서 A = 해당 userId를 가진 column 이 가진 business_id 로
-  // where proposals.business_id = A
   public async findProposals(business_id) {
     return await this.proposalRepository
       .createQueryBuilder('proposals')

@@ -1,3 +1,4 @@
+import { SendRequestMailDto } from './dtos/request/send.request.mail.dto';
 import { SaveMailSentDto } from './dtos/save.mail.sent.dto';
 import { CustomInternalException } from './../../../exceptions/customInternal.exception';
 import { MailRepository } from './mail.repository';
@@ -11,33 +12,27 @@ export class MailService {
     private readonly mailRepo: MailRepository,
   ) {}
 
-  async sendRequestMail(
-    clientEmail: string[],
-    clientName: string,
-    business_user_id: string,
-    proposal_id: number,
-    presignedUrl: string,
-  ): Promise<any> {
+  async sendRequestMail(sendMailDto: SendRequestMailDto): Promise<any> {
     const saveResult = await this.mailerService.sendMail({
-      to: clientEmail,
-      from: `"DCLOSER" <${process.env.EMAIL_AUTH_EMAIL}>`,
+      to: sendMailDto.clientEmail,
+      from: `${sendMailDto.business_name} <${process.env.EMAIL_AUTH_EMAIL}>`,
       subject: '견적서가 도착했습니다',
       html: recommendProposalHtml(
         {
-          fromName: 'D.CLOSER',
-          fromEmail: `${process.env.EMAIL_AUTH_EMAIL}`,
-          toName: clientName,
-          toEmail: clientEmail[0],
+          fromName: sendMailDto.business_user_name,
+          fromEmail: sendMailDto.business_user_email,
+          toName: sendMailDto.clientName,
+          toEmail: sendMailDto.clientEmail[0],
         },
-        presignedUrl,
+        sendMailDto.presigned_url,
       ),
     });
 
     const reqSaveMailSentDto: SaveMailSentDto = {
-      business_user_id,
-      proposal_id,
-      sent_to: clientName,
-      sent_email: clientEmail[0],
+      business_user_id: sendMailDto.business_user_id,
+      proposal_id: sendMailDto.proposal_id,
+      sent_to: sendMailDto.clientName,
+      sent_email: sendMailDto.clientEmail[0],
     };
     this.mailRepo
       .saveMailSent(reqSaveMailSentDto)

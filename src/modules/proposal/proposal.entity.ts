@@ -1,11 +1,8 @@
 import { SaveProposalDto } from './dtos/saveProposal.dto';
-import { UserEntity } from './../user/user.entity';
 import { ProposalStatusEnum } from './enums/proposal.status.enum';
-import { BusinessEntity } from './../user/business/business.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   DeleteDateColumn,
@@ -55,7 +52,6 @@ export class ProposalEntity {
   deleted_at: Date;
 
   static create(saveProposal: SaveProposalDto) {
-    console.log('saveProposal', saveProposal);
     const proposal = new ProposalEntity();
     proposal.customer_company_rep = saveProposal.customer_company_rep;
     proposal.customer_company_id = saveProposal.customer_company_id;

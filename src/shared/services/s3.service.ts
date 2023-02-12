@@ -16,7 +16,7 @@ export class S3Service {
   async uploadFile(file, fileKey) {
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `견적서${fileKey}`,
+      Key: fileKey,
       Body: file.buffer,
     };
 
@@ -34,7 +34,7 @@ export class S3Service {
   public generatePresignedUrl(objectKey: string) {
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `견적서${objectKey}`,
+      Key: objectKey,
       Expires: 60,
     };
 
