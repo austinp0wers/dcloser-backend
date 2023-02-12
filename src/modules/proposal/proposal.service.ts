@@ -53,12 +53,20 @@ export class ProposalService {
     business_id: number,
     business_user_id: string,
   ) {
+    console.log('proposalBody.customer_company_rep', typeof proposalBody);
     const saveProposalDto: SaveProposalDto = {
-      ...proposalBody,
+      customer_company_rep: proposalBody['customer_company_rep'],
+      customer_company_id: proposalBody['customer_company_id'],
+      total_payment_price: proposalBody.total_payment_price,
+      proposal_title: proposalBody.proposal_title,
+      paid_period: proposalBody.paid_period,
+      expire_at: proposalBody.expire_at,
       business_id,
       business_user_id,
+      status: 'SENT',
     };
     const proposal: ProposalEntity = ProposalEntity.create(saveProposalDto);
+    console.log('proposal', proposal);
     const updateProposalResult = await this.proposalRepo.saveProposal(proposal);
 
     // products_offered DB에 선택된 제품들 저장하기.

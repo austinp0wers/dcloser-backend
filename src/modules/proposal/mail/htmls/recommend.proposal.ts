@@ -1,4 +1,4 @@
-export function recommendProposalHtml(userDetails: any) {
+export function recommendProposalHtml(userDetails: any, downloadLink: string) {
   return `<body><div><div style="background-color: #f5f8fa;letter-spacing: inherit;line-height: inherit;margin: 0;min-width: 300px;padding: 16px 6px;text-align: center;width: 100%;"><div style="color: #2e3949;display: inline-block;letter-spacing: inherit;line-height: inherit;max-width: 658px;min-width: 300px;text-align: left;"><table style="
             border-collapse: collapse;
             font-family: 'Apple SD Gothic Neo', 'Noto Sans CJK KR',
@@ -352,7 +352,7 @@ export function recommendProposalHtml(userDetails: any) {
                                     </tr>
                                     <tr>
                               <td style="border-collapse:collapse;color:#2e3949;font-family:'Apple SD Gothic Neo','Noto Sans CJK KR',NanumBarunGothic,NanumBarunGothicOTF,NanumGothic,나눔고딕,'Malgun Gothic',sans-serif;font-size:15px;letter-spacing:-0.04em;line-height:1;padding:20px;padding-left:4.5%;padding-right:4.5%; text-align: center;">
-                                  <a href="https://google.com" style="color:#2e3949;text-decoration:none"><span style="background:#000 ;color:#fff;display:inline-block;font-size:16px;font-weight:600;letter-spacing:-0.04em;line-height:1;padding:16px 24px; border-radius:10px;">
+                                  <a href=${downloadLink} style="color:#2e3949;text-decoration:none"><span style="background:#000 ;color:#fff;display:inline-block;font-size:16px;font-weight:600;letter-spacing:-0.04em;line-height:1;padding:16px 24px; border-radius:10px;">
                                       견적서 확인하기
                                   </span></a>
                               </td>

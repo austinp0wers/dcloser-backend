@@ -25,4 +25,13 @@ export class BusinessRepository {
       .from(BusinessEntity, 'businesses')
       .getMany();
   }
+
+  public async findBusinessById(business_id): Promise<BusinessEntity> {
+    return await this.businessRepo
+      .createQueryBuilder()
+      .select('businesses')
+      .from(BusinessEntity, 'businesses')
+      .where('id = :business_id', { business_id })
+      .getOne();
+  }
 }

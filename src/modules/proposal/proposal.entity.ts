@@ -55,6 +55,7 @@ export class ProposalEntity {
   deleted_at: Date;
 
   static create(saveProposal: SaveProposalDto) {
+    console.log('saveProposal', saveProposal);
     const proposal = new ProposalEntity();
     proposal.customer_company_rep = saveProposal.customer_company_rep;
     proposal.customer_company_id = saveProposal.customer_company_id;

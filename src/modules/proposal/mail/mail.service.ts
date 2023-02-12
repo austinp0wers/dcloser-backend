@@ -2,7 +2,7 @@ import { SaveMailSentDto } from './dtos/save.mail.sent.dto';
 import { CustomInternalException } from './../../../exceptions/customInternal.exception';
 import { MailRepository } from './mail.repository';
 import { MailerService } from '@nestjs-modules/mailer';
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { recommendProposalHtml } from './htmls/recommend.proposal';
 @Injectable()
 export class MailService {
@@ -16,17 +16,21 @@ export class MailService {
     clientName: string,
     business_user_id: string,
     proposal_id: number,
+    presignedUrl: string,
   ): Promise<any> {
     const saveResult = await this.mailerService.sendMail({
       to: clientEmail,
       from: `"DCLOSER" <${process.env.EMAIL_AUTH_EMAIL}>`,
       subject: '견적서가 도착했습니다',
-      html: recommendProposalHtml({
-        fromName: 'D.CLOSER',
-        fromEmail: `${process.env.EMAIL_AUTH_EMAIL}`,
-        toName: clientName,
-        toEmail: clientEmail[0],
-      }),
+      html: recommendProposalHtml(
+        {
+          fromName: 'D.CLOSER',
+          fromEmail: `${process.env.EMAIL_AUTH_EMAIL}`,
+          toName: clientName,
+          toEmail: clientEmail[0],
+        },
+        presignedUrl,
+      ),
     });
 
     const reqSaveMailSentDto: SaveMailSentDto = {

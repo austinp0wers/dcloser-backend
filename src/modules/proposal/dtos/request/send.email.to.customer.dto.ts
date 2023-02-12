@@ -1,16 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ReqCreateProposalDto } from './create.request.proposal.dto';
-import { IsString, IsNotEmpty, IsArray } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsArray,
+  ValidateNested,
+  IsNotEmptyObject,
+} from 'class-validator';
+import { Type, Transform } from 'class-transformer';
 
 export class ReqSendEmailToCustomerDto {
-  //   @Transform(({ value }) => trimPipe(value))
   @ApiProperty()
   @IsNotEmpty()
   @IsString({ each: true })
   @IsArray()
   readonly clientEmail: string[];
 
+  // @Transform(({ value }) => JSON.parse(value))
   @ApiProperty()
+  // @IsNotEmptyObject()
+  // @ValidateNested()
+  // @Type(() => ReqCreateProposalDto)
   @IsNotEmpty()
   proposalData: ReqCreateProposalDto;
 }

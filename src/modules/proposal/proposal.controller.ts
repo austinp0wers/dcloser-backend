@@ -1,3 +1,4 @@
+import { S3Service } from './../../shared/services/s3.service';
 import { ResSaveProposalDto } from './dtos/response/save.proposal.dto';
 import { CustomInternalException } from './../../exceptions/customInternal.exception';
 import { ReqSendEmailToCustomerDto } from './dtos/request/send.email.to.customer.dto';
@@ -14,8 +15,10 @@ import {
   Res,
   UseInterceptors,
   Param,
+  UploadedFile,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('proposal')
 @ApiTags('proposal')
@@ -24,6 +27,7 @@ export class ProposalController {
   constructor(
     private proposalService: ProposalService,
     private readonly mailService: MailService,
+    private readonly s3Service: S3Service,
   ) {}
 
   @Get(':proposalId')
@@ -36,26 +40,41 @@ export class ProposalController {
   }
 
   @Post('email')
+  @UseInterceptors(FileInterceptor('file'))
   public async sendEmailToCustomer(
     @Req() req,
     @Res() res,
     @Body() reqSendToCustomerInfo: ReqSendEmailToCustomerDto,
+    @UploadedFile() file,
   ) {
     const { business_id, business_user_id } = req.user;
 
+    if (typeof reqSendToCustomerInfo.proposalData === 'string') {
+      reqSendToCustomerInfo.proposalData = JSON.parse(
+        reqSendToCustomerInfo.proposalData,
+      );
+    }
     const savedProposal = await this.proposalService.saveProposal(
       reqSendToCustomerInfo.proposalData,
       business_id,
       business_user_id,
     );
+
+    await this.s3Service.uploadFile(file, savedProposal.identifiers[0].id);
     if (!savedProposal) {
       throw new CustomInternalException('Create proposal failed');
     }
+
+    const preSignedUrl = this.s3Service.generatePresignedUrl(
+      savedProposal.identifiers[0].id,
+    );
+
     const result = await this.mailService.sendRequestMail(
       reqSendToCustomerInfo.clientEmail,
       reqSendToCustomerInfo.proposalData.customer_company_rep,
       business_user_id,
       savedProposal.identifiers[0].id,
+      preSignedUrl,
     );
     if (result.rejected.length >= 1) {
       throw new CustomInternalException('internal server error');
@@ -74,11 +93,13 @@ export class ProposalController {
     @Body() reqCreateProposal: ReqCreateProposalDto,
   ) {
     const { business_id, business_user_id } = req.user;
+
     const savedProposal = await this.proposalService.saveProposal(
       reqCreateProposal,
       business_id,
       business_user_id,
     );
+
     if (!savedProposal) {
       throw new CustomInternalException('Create Proposal Failed');
     }
