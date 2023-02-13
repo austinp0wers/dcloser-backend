@@ -1,3 +1,4 @@
+import { ResGetProposalByIdDto } from './dtos/response/get.proposal.by.id.dto';
 import { UserService } from './../user/user.service';
 import { BusinessService } from './../user/business/business.service';
 import { S3Service } from './../../shared/services/s3.service';
@@ -35,15 +36,23 @@ export class ProposalController {
   ) {}
 
   @Get(':proposalId')
+  @ApiOkResponse({
+    type: ResGetProposalByIdDto,
+    description: '견적서 ID 로 정보 조회',
+  })
   public async getProposalById(@Req() req, @Res() res, @Param() proposalId) {
     const proposalInfo = await this.proposalService.findProposalById(
       Number(proposalId.proposalId),
     );
 
-    res.json({ status: 'success', ...proposalInfo });
+    res.json({ success: true, code: 200, proposal: proposalInfo });
   }
 
   @Post('email')
+  @ApiOkResponse({
+    type: ResSaveProposalDto,
+    description: '이메일로 전송',
+  })
   @UseInterceptors(FileInterceptor('file'))
   public async sendEmailToCustomer(
     @Req() req,
@@ -93,7 +102,12 @@ export class ProposalController {
     if (result.rejected.length >= 1) {
       throw new CustomInternalException('internal server error');
     }
-    res.json({ status: 'success', code: 200 });
+    res.json(
+      new ResSaveProposalDto(
+        { success: true, code: 200 },
+        'Email Successfully Sent ',
+      ),
+    );
   }
 
   @Post('')

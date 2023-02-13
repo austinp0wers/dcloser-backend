@@ -21,9 +21,9 @@ export class CustomerCompanyRepository {
   public async findCustomerCompanyById(customer_company_id: number) {
     return await this.customerCompanyRepo
       .createQueryBuilder()
-      .from(CustomerCompanyEntity, 'customerCompany')
-      .select('customerCompany')
-      .where('customerCompany.id =: customer_company_id', {
+      .from(CustomerCompanyEntity, 'customer_company')
+      .select('customer_company')
+      .where('customer_company.id = :customer_company_id', {
         customer_company_id,
       })
       .getOne();

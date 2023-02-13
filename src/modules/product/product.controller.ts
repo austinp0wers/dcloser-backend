@@ -7,7 +7,6 @@ import {
   Body,
   Controller,
   Get,
-  Param,
   Post,
   Req,
   Res,
@@ -20,20 +19,14 @@ import {
 export class ProductController {
   constructor(private productService: ProductService) {}
 
-  @Get('')
+  @Get()
   public async getProductList(@Req() req, @Res() res) {
     const { business_id } = req.user;
     const products = await this.productService.getProductList(business_id);
     res.json({ success: true, code: 200, products });
   }
 
-  @Get('/price/:productId')
-  public async getProductPrice(@Req() req, @Res() res, @Param() productId) {
-    const product_price = await this.productService.getProductPrice(productId);
-    res.json({ success: true, code: 200, product_price });
-  }
-
-  @Post('')
+  @Post()
   public async saveProduct(
     @Req() req,
     @Res() res,
