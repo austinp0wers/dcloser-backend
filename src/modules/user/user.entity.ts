@@ -1,4 +1,3 @@
-import { BusinessEntity } from './business/business.entity';
 import { UserRoleEnum } from './enums/role.enum';
 import {
   BeforeInsert,
@@ -6,8 +5,6 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -34,7 +31,7 @@ export class UserEntity {
   @Exclude({ toPlainOnly: true })
   password: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: UserRoleEnum.user })
   role: UserRoleEnum;
 
   @BeforeInsert()

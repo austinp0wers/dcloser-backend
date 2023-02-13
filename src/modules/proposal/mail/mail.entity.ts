@@ -1,11 +1,8 @@
-import { ProposalEntity } from './../proposal.entity';
 import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  ManyToOne,
-  JoinColumn,
 } from 'typeorm';
 
 @Entity({ name: 'mail_sent' })

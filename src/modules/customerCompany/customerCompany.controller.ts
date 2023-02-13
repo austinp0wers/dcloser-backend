@@ -7,7 +7,6 @@ import {
   Body,
   Controller,
   Get,
-  Param,
   Post,
   Req,
   Res,
@@ -33,7 +32,7 @@ export class CustomerCompanyController {
     res.json({ code: 200, status: 'success', customerCompanies });
   }
 
-  @Post('')
+  @Post()
   public async saveCustomerCompanies(
     @Req() req,
     @Res() res,

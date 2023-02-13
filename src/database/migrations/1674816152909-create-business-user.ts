@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 export class createBusinessUser1674816152909 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      "CREATE TYPE \"users_role_enum\" AS ENUM('USER', 'ADMIN')",
+      "CREATE TYPE \"users_role_enum\" AS ENUM('USER', 'MANAGER')",
     );
     await queryRunner.query(`
     CREATE TABLE "business_users" (

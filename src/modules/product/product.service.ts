@@ -13,12 +13,6 @@ export class ProductService {
     return await this.productRepo.findProductsByBusinessId(businessId);
   }
 
-  public async getProductPrice(productId: string) {
-    return await this.productRepo.findProductPriceByProductId(
-      Number(productId),
-    );
-  }
-
   public async saveProduct(saveProductDto: any, reqSaveProductPriceDto: any) {
     // 제품 저장
     const product: ProductEntity = ProductEntity.create(saveProductDto);

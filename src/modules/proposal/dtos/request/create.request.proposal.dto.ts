@@ -16,7 +16,7 @@ export class ReqCreateProposalDto {
   @ApiProperty({ maxLength: 128 })
   @IsString()
   @MaxLength(128)
-  @IsOptional()
+  @IsNotEmpty()
   customer_company_rep: string;
 
   @ApiProperty()
@@ -27,18 +27,18 @@ export class ReqCreateProposalDto {
   //customerCompany_id 로 연결
   @ApiProperty()
   @IsInt()
-  @IsOptional()
+  @IsNotEmpty()
   customer_company_id: number;
 
   // 이건 enum 으로 처리.
   @ApiProperty()
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   paid_period: string;
 
   @ApiProperty()
   @IsInt()
-  @IsOptional()
+  @IsNotEmpty()
   total_payment_price: number;
 
   @ApiProperty()

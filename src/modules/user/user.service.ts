@@ -1,3 +1,4 @@
+import { ReqManagerRegisterDto } from './../auth/dtos/request/manager.register.dto';
 import { CustomBadRequestException } from './../../exceptions/customBadRequest.exception';
 import { RegisterDataDto } from './../auth/dtos/registerData.dto';
 import { UserEntity } from './user.entity';
@@ -25,6 +26,21 @@ export class UserService {
     const user = await this.userRepository.saveUser(registerInfo);
 
     return user;
+  }
+
+  public async createManager(
+    registerInfo: ReqManagerRegisterDto,
+  ): Promise<UserEntity | null> {
+    const userExist = await this.userRepository.findOneByEmailOrPhone(
+      registerInfo,
+    );
+    if (userExist) {
+      throw new CustomBadRequestException('Manager Already Exists');
+    }
+
+    const manager = await this.userRepository.saveUser(registerInfo);
+
+    return manager;
   }
 
   public async findUserById(business_user_id) {

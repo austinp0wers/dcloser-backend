@@ -14,26 +14,12 @@ export class ProductRepository {
     private productPriceRepo: Repository<ProductPriceEntity>,
   ) {}
 
-  public async findProductsByBusinessId(
-    business_id: number,
-  ): Promise<ProductEntity[]> {
-    return await this.productRepo
-      .createQueryBuilder()
-      .select('products')
-      .from(ProductEntity, 'products')
-      .where('products.business_id = :business_id', { business_id })
-      .getMany();
-  }
-
-  public async findProductPriceByProductId(
-    product_id: number,
-  ): Promise<ProductPriceEntity> {
-    return await this.productPriceRepo
-      .createQueryBuilder()
-      .select('product_prices')
-      .from(ProductPriceEntity, 'product_prices')
-      .where('product_prices = :product_id', { product_id })
-      .getOne();
+  public async findProductsByBusinessId(business_id: number): Promise<any[]> {
+    return await this.productRepo.query(
+      `SELECT "product_prices"."price" AS "product_prices_price",
+      "product_prices"."id" AS "product_prices_id", products.*
+FROM "products" "products" LEFT JOIN "product_prices" "product_prices" ON  "product_prices"."product_id" = "products"."id" AND "product_prices"."deleted_at" IS NULL WHERE ( "products"."business_id" = ${business_id} AND "products"."deleted_at" IS NULL AND "product_prices"."deleted_at" IS NULL ) AND ( "products"."deleted_at" IS NULL )`,
+    );
   }
 
   public async saveProduct(saveProductDto: ProductEntity): Promise<any> {

@@ -1,3 +1,4 @@
+import { ReqManagerRegisterDto } from './dtos/request/manager.register.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './../user/user.entity';
 import { UserService } from './../user/user.service';
@@ -39,13 +40,24 @@ export class AuthController {
     );
   }
 
-  @Post('register')
+  @Post('register/user')
   async userRegister(
     @Req() req,
     @Res() res,
     @Body() registerData: RegisterDataDto,
   ): Promise<RegisterResponseDto> {
     await this.userService.createUser(registerData);
+
+    return res.json(new RegisterResponseDto(200, 'OK', true));
+  }
+
+  @Post('register/manager')
+  async managerRegister(
+    @Req() req,
+    @Res() res,
+    @Body() registerData: ReqManagerRegisterDto,
+  ): Promise<RegisterResponseDto> {
+    await this.userService.createManager(registerData);
 
     return res.json(new RegisterResponseDto(200, 'OK', true));
   }
