@@ -1,8 +1,9 @@
+import { ResGetProposalListDto } from './dtos/response/get.proposal.list.dto';
 import { ResGetProposalByIdDto } from './dtos/response/get.proposal.by.id.dto';
 import { UserService } from './../user/user.service';
 import { BusinessService } from './../user/business/business.service';
 import { S3Service } from './../../shared/services/s3.service';
-import { ResSaveProposalDto } from './dtos/response/save.proposal.dto';
+import { ResSaveSuccessDto } from './dtos/response/save.proposal.dto';
 import { CustomInternalException } from './../../exceptions/customInternal.exception';
 import { ReqSendEmailToCustomerDto } from './dtos/request/send.email.to.customer.dto';
 import { MailService } from './mail/mail.service';
@@ -50,10 +51,10 @@ export class ProposalController {
 
   @Post('email')
   @ApiOkResponse({
-    type: ResSaveProposalDto,
+    type: ResSaveSuccessDto,
     description: '이메일로 전송',
   })
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('pdf'))
   public async sendEmailToCustomer(
     @Req() req,
     @Res() res,
@@ -103,7 +104,7 @@ export class ProposalController {
       throw new CustomInternalException('internal server error');
     }
     res.json(
-      new ResSaveProposalDto(
+      new ResSaveSuccessDto(
         { success: true, code: 200 },
         'Email Successfully Sent ',
       ),
@@ -112,8 +113,8 @@ export class ProposalController {
 
   @Post('')
   @ApiOkResponse({
-    type: ResSaveProposalDto,
-    description: 'Successfully Saved',
+    type: ResSaveSuccessDto,
+    description: '견적서 저장 결과',
   })
   public async saveProposal(
     @Req() req,
@@ -132,11 +133,15 @@ export class ProposalController {
       throw new CustomInternalException('Create Proposal Failed');
     }
     res.json(
-      new ResSaveProposalDto({ success: true, code: 200 }, 'Create Successful'),
+      new ResSaveSuccessDto({ success: true, code: 200 }, 'Create Successful'),
     );
   }
 
   @Get('')
+  @ApiOkResponse({
+    type: ResGetProposalListDto,
+    description: '견적서 목록 조회',
+  })
   public async getProposalList(@Req() req, @Res() res) {
     // user_id 에서 Business_id 조회
     const business_id = req.user.business_id;

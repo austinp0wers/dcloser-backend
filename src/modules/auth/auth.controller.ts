@@ -1,5 +1,5 @@
 import { ReqManagerRegisterDto } from './dtos/request/manager.register.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
 import { UserEntity } from './../user/user.entity';
 import { UserService } from './../user/user.service';
 import { RegisterResponseDto } from './dtos/registerResponse.dto';
@@ -27,6 +27,10 @@ export class AuthController {
   ) {}
 
   @Post('login')
+  @ApiOkResponse({
+    type: LoginResponseDto,
+    description: '로그인 결과',
+  })
   async userLogin(@Req() req, @Res() res, @Body() loginDataDto: LoginDataDto) {
     const user: UserEntity = await this.authService.validateUser(loginDataDto);
     const access_token = await this.authService.createAccessToken({
@@ -41,6 +45,10 @@ export class AuthController {
   }
 
   @Post('register/user')
+  @ApiOkResponse({
+    type: RegisterResponseDto,
+    description: '기업 구성원 회원가입 결과',
+  })
   async userRegister(
     @Req() req,
     @Res() res,
@@ -52,6 +60,10 @@ export class AuthController {
   }
 
   @Post('register/manager')
+  @ApiOkResponse({
+    type: RegisterResponseDto,
+    description: '기업 관리자 회원가입 결과',
+  })
   async managerRegister(
     @Req() req,
     @Res() res,

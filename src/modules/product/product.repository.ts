@@ -1,3 +1,4 @@
+import { ProductInfoDto } from './dtos/product.info.dto';
 import { ProductPriceEntity } from './entities/productPrice.entity';
 import { ProductEntity } from './entities/product.entity';
 import { Repository } from 'typeorm';
@@ -14,7 +15,9 @@ export class ProductRepository {
     private productPriceRepo: Repository<ProductPriceEntity>,
   ) {}
 
-  public async findProductsByBusinessId(business_id: number): Promise<any[]> {
+  public async findProductsByBusinessId(
+    business_id: number,
+  ): Promise<ProductInfoDto[]> {
     return await this.productRepo.query(
       `SELECT "product_prices"."price" AS "product_prices_price",
       "product_prices"."id" AS "product_prices_id", products.*

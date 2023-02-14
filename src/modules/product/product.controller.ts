@@ -1,6 +1,8 @@
+import { ResSaveSuccessDto } from './../proposal/dtos/response/save.proposal.dto';
+import { ResProductListDto } from './dtos/response/get.productList.dto';
 import { ReqSaveProductDto } from './dtos/request/req.save.product.dto';
 import { SaveProductDto } from './dtos/save.product.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
 import { ProductService } from './product.service';
 import { ResponseInterceptor } from './../../interceptors/response.interceptor';
 import {
@@ -20,13 +22,21 @@ export class ProductController {
   constructor(private productService: ProductService) {}
 
   @Get()
+  @ApiOkResponse({
+    type: ResProductListDto,
+    description: '제품 목록 정보',
+  })
   public async getProductList(@Req() req, @Res() res) {
     const { business_id } = req.user;
     const products = await this.productService.getProductList(business_id);
-    res.json({ success: true, code: 200, products });
+    res.json(new ResProductListDto(true, 200, products));
   }
 
   @Post()
+  @ApiOkResponse({
+    type: ResSaveSuccessDto,
+    description: '제품 저장 결과',
+  })
   public async saveProduct(
     @Req() req,
     @Res() res,
@@ -42,6 +52,14 @@ export class ProductController {
       reqSaveProductDto,
       reqSaveProductPriceDto,
     );
-    res.json({ success: true, code: 200, message: 'save successful' });
+    res.json(
+      new ResSaveSuccessDto(
+        {
+          success: true,
+          code: 200,
+        },
+        'save successful',
+      ),
+    );
   }
 }

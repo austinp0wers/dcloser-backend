@@ -37,6 +37,7 @@
     "cors": "^2.8.5",
     "handlebars": "^4.7.7",
     "lodash": "^4.17.21",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.1",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
