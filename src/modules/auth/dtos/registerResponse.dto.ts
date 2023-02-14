@@ -1,6 +1,10 @@
+import { ApiProperty } from '@nestjs/swagger';
 export class RegisterResponseDto {
+  @ApiProperty()
   code: number;
+  @ApiProperty()
   message: string;
+  @ApiProperty()
   success: boolean;
 
   constructor(code: number, message: string, success: boolean) {

@@ -1,3 +1,4 @@
+import { BusinessInfoDto } from './dtos/business.info.dto';
 import { BusinessEntity } from './business.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,7 +18,7 @@ export class BusinessRepository {
       .execute();
   }
 
-  public async findBusinesses(): Promise<BusinessEntity[]> {
+  public async findBusinesses(): Promise<BusinessInfoDto[]> {
     return await this.businessRepo
       .createQueryBuilder()
       .select('businesses')

@@ -1,5 +1,7 @@
+import { ResGetCustomerCompaniesDto } from './dtos/response/get.customerCompanies.dto';
+import { ResSaveSuccessDto } from './../proposal/dtos/response/save.proposal.dto';
 import { ReqSaveCustomerCompanyDto } from './dtos/request/req.save.customerCompany.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
 import { ResponseInterceptor } from './../../interceptors/response.interceptor';
 import { CustomNotFoundException } from 'src/exceptions/customNotFound.exception';
 import { CustomerCompanyService } from './customerCompany.service';
@@ -20,6 +22,10 @@ export class CustomerCompanyController {
   constructor(private customerCompanyService: CustomerCompanyService) {}
 
   @Get()
+  @ApiOkResponse({
+    type: ResGetCustomerCompaniesDto,
+    description: '고객사 회사 정보 조회',
+  })
   public async getCustomerCompanies(@Req() req, @Res() res) {
     const { business_id } = req.user;
     const customerCompanies =
@@ -33,6 +39,10 @@ export class CustomerCompanyController {
   }
 
   @Post()
+  @ApiOkResponse({
+    type: ResSaveSuccessDto,
+    description: '고객사 회사 정보 저장',
+  })
   public async saveCustomerCompanies(
     @Req() req,
     @Res() res,
@@ -45,6 +55,8 @@ export class CustomerCompanyController {
       business_id,
     );
 
-    res.json({ code: 200, status: 'success' });
+    res.json(
+      new ResSaveSuccessDto({ code: 200, success: true }, 'Successfully saved'),
+    );
   }
 }

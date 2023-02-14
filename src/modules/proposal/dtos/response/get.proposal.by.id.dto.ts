@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IGetProposalById } from './../../interfaces/response/get.proposal.by.id.interface';
+import { GetProposalDto } from './get.proposal.dto';
 export class ResGetProposalByIdDto {
   @ApiProperty()
   success: boolean;
@@ -8,8 +8,8 @@ export class ResGetProposalByIdDto {
   code: number;
 
   @ApiProperty()
-  proposal: IGetProposalById;
-  constructor(code: number, success: boolean, proposal: IGetProposalById) {
+  proposal: GetProposalDto;
+  constructor(code: number, success: boolean, proposal: GetProposalDto) {
     this.success = success;
     this.code = code;
     this.proposal = proposal;

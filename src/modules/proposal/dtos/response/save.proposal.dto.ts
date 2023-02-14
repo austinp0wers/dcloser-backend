@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ResSaveProposalDto {
+export class ResSaveSuccessDto {
   @ApiProperty()
   success: boolean;
 
