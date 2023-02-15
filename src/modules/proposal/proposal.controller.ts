@@ -1,3 +1,4 @@
+import { ProposalInfoDto } from './dtos/proposal.info.dto';
 import { ResGetProposalListDto } from './dtos/response/get.proposal.list.dto';
 import { ResGetProposalByIdDto } from './dtos/response/get.proposal.by.id.dto';
 import { UserService } from './../user/user.service';
@@ -21,7 +22,7 @@ import {
   Param,
   UploadedFile,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('proposal')
@@ -138,9 +139,11 @@ export class ProposalController {
   }
 
   @Get('')
-  @ApiOkResponse({
-    type: ResGetProposalListDto,
+  @ApiResponse({
+    status: 200,
     description: '견적서 목록 조회',
+    type: ProposalInfoDto,
+    isArray: true,
   })
   public async getProposalList(@Req() req, @Res() res) {
     // user_id 에서 Business_id 조회
