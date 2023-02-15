@@ -31,11 +31,6 @@ export class createProductsOfferedTable1675783505803
             default: 'now()',
           },
           {
-            name: 'updated_at',
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
             name: 'deleted_at',
             type: 'timestamp',
             isNullable: true,

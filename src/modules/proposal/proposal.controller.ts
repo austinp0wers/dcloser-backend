@@ -1,3 +1,4 @@
+import { ProposalInfoDto } from './dtos/proposal.info.dto';
 import { ResGetProposalListDto } from './dtos/response/get.proposal.list.dto';
 import { ResGetProposalByIdDto } from './dtos/response/get.proposal.by.id.dto';
 import { UserService } from './../user/user.service';
