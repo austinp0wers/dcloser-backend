@@ -139,11 +139,9 @@ export class ProposalController {
   }
 
   @Get('')
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
+    type: ResGetProposalListDto,
     description: '견적서 목록 조회',
-    type: ProposalInfoDto,
-    isArray: true,
   })
   public async getProposalList(@Req() req, @Res() res) {
     // user_id 에서 Business_id 조회
