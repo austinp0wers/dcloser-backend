@@ -25,6 +25,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         HttpExceptionFilter.getErrorMsg(status);
       const success: boolean = exceptionRes.success === true;
       const customCode = exceptionRes.code || '';
+      console.log('response.req.originalUrl', response.req);
 
       let popup: string;
       if (typeof errorLog === 'string' && errorLog.includes('popup')) {
@@ -66,21 +67,22 @@ export class HttpExceptionFilter implements ExceptionFilter {
       }
 
       // 에러 로그 기록
-      if (errorLog) {
-        console.log(errorLog);
-      }
+      // if (errorLog) {
+      //   console.log(errorLog);
+      // }
 
       //   if (exceptionRes.noti) {
       const errorLine: string = exceptionRes.errorLine || '';
-
-      this.slackService.sendMessage(
-        JSON.stringify(exception.stack),
-        // this.slackService.getMessgeContents({
-        //   headers,
-        //   errorMessage: errorLog,
-        //   errorLine,
-        //   exception,
-        // }),
+      this.slackService.sendErrorMessage(
+        this.slackService.getMessgeContents({
+          headers: response.req.headers,
+          errorMessage: exceptionRes.message[0],
+          body: JSON.stringify(response.req.body),
+          method: response.req.method,
+          errorLine,
+          url: response.req.originalUrl,
+          exception: exceptionRes.error,
+        }),
       );
       //   }
 

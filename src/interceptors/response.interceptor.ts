@@ -21,10 +21,10 @@ export class ResponseInterceptor implements NestInterceptor {
   ): Observable<any> | Promise<Observable<any>> {
     return next.handle().pipe(
       catchError((error) => {
-        if (
-          error instanceof CustomBadRequestException ||
-          error instanceof BadRequestException
-        ) {
+        if (error instanceof BadRequestException) {
+          throw error;
+        }
+        if (error instanceof CustomBadRequestException) {
           throw error;
         }
         if (error instanceof CustomNotFoundException) {
