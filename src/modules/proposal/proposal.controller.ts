@@ -149,7 +149,7 @@ export class ProposalController {
     const getProposals = await this.proposalService.getProposalList(
       business_id,
     );
-    res.json({ success: true, code: 200, getProposals: { ...getProposals } });
+    res.json({ success: true, code: 200, getProposals: getProposals });
   }
 
   // @Post('/internal')
