@@ -1,3 +1,4 @@
+import { UserModule } from './modules/user/user.module';
 import { SlackModule } from './shared/slack.module';
 import { ProposalModule } from './modules/proposal/proposal.module';
 import { SharedModule } from './shared/shared.module';
@@ -13,6 +14,7 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { APP_FILTER } from '@nestjs/core';
 @Module({
   imports: [
+    UserModule,
     AuthModule,
     ProposalModule,
     SlackModule,
@@ -38,6 +40,7 @@ import { APP_FILTER } from '@nestjs/core';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('/user');
     consumer.apply(AuthMiddleware).forRoutes('/proposal');
     consumer.apply(AuthMiddleware).forRoutes('/product');
     consumer.apply(AuthMiddleware).forRoutes('/customer-company');
