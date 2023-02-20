@@ -35,6 +35,7 @@ FROM "products" "products" LEFT JOIN "product_prices" "product_prices" ON  "prod
           business_user_id: saveProductDto.business_user_id,
           name: saveProductDto.name,
           business_id: saveProductDto.business_id,
+          description: saveProductDto.description,
         },
       ])
       .execute();

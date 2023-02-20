@@ -26,6 +26,9 @@ export class ProductEntity {
   @Column({ nullable: true, type: String })
   name: string;
 
+  @Column({ nullable: true, type: String })
+  description: string;
+
   // business entity의 id랑 join.
   @ManyToOne(() => BusinessEntity)
   @JoinColumn({ name: 'business_id' })
@@ -45,7 +48,7 @@ export class ProductEntity {
     product.business_id = saveProduct.business_id;
     product.name = saveProduct.name;
     product.business_user_id = saveProduct.business_user_id;
-
+    product.description = saveProduct.description;
     return product;
   }
 }
