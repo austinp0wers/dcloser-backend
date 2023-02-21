@@ -17,10 +17,6 @@ export class ApiConfigService {
     return this.nodeEnv === 'production';
   }
 
-  get isTest(): boolean {
-    return this.nodeEnv === 'test';
-  }
-
   private getNumber(key: string): number {
     const value = this.get(key);
 
@@ -60,8 +56,6 @@ export class ApiConfigService {
     return {
       entities,
       migrations,
-      keepConnectionAlive: !this.isTest,
-      dropSchema: this.isTest,
       type: 'postgres',
       name: 'default',
       host: this.getString('DB_HOST'),
@@ -69,9 +63,9 @@ export class ApiConfigService {
       username: this.getString('DB_USERNAME'),
       password: this.getString('DB_PASSWORD'),
       database: this.getString('DB_DATABASE'),
-      // synchronize: true,
+      synchronize: false,
       logging: true,
-      migrationsRun: true,
+      migrationsRun: false,
       namingStrategy: new SnakeNamingStrategy(),
     };
   }
