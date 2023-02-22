@@ -86,35 +86,47 @@ export class ProposalService {
     const userNameAndId = new Map();
     const customerNameAndId = new Map();
     const proposals = [];
+    let userNameList: UserEntity[];
     let responseDto;
+    let proposalList: ProposalEntity[];
 
-    // 견적서 리스트 뽑아 오기.
-    const proposalList = await this.proposalRepo.findProposals(business_id);
+    try {
+      // 견적서 리스트 뽑아 오기.
+      proposalList = await this.proposalRepo.findProposals(business_id);
 
-    for (let i = 0; i < proposalList.length; i++) {
-      userIdList.push(proposalList[i].business_user_id);
-    }
-    if (userIdList.length < 1) {
-      return [];
-    }
-    // 작성한 담당자 이름 조회 & map
-    const userNameList: UserEntity[] =
-      await this.userRepository.findUserNameByIds(userIdList);
-
-    for (let i = 0; i < userNameList.length; i++) {
-      userNameAndId.set(userNameList[i].id, userNameList[i].name);
+      for (let i = 0; i < proposalList.length; i++) {
+        userIdList.push(proposalList[i].business_user_id);
+      }
+      if (userIdList.length < 1) {
+        return [];
+      }
+    } catch (err) {
+      console.log(err.message);
     }
 
-    // 고객사 정보 조회 & map
-    const customerCompanyName =
-      await this.customerCompanyRepo.findCustomerCompanies(business_id);
-    if (customerCompanyName.length >= 1) {
+    try {
+      // 작성한 담당자 이름 조회 & map
+      userNameList = await this.userRepository.findUserNameByIds(userIdList);
+
       for (let i = 0; i < userNameList.length; i++) {
+        userNameAndId.set(userNameList[i].id, userNameList[i].name);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+
+    try {
+      // 고객사 정보 조회 & map
+      const customerCompanyName =
+        await this.customerCompanyRepo.findCustomerCompanies(business_id);
+      for (let i = 0; i < customerCompanyName.length; i++) {
         customerNameAndId.set(
           customerCompanyName[i].id,
           customerCompanyName[i].name,
         );
       }
+    } catch (err) {
+      console.log(err.message);
     }
 
     for (let i = 0; i < proposalList.length; i++) {

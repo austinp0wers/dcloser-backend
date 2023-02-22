@@ -1,5 +1,5 @@
 export class SendRequestMailDto {
-  clientEmail: string[];
+  clientEmail: string;
   clientName: string;
   business_user_id: string;
   proposal_id: number;

@@ -22,7 +22,7 @@ export class MailService {
           fromName: sendMailDto.business_user_name,
           fromEmail: sendMailDto.business_user_email,
           toName: sendMailDto.clientName,
-          toEmail: sendMailDto.clientEmail[0],
+          toEmail: sendMailDto.clientEmail,
         },
         sendMailDto.presigned_url,
       ),

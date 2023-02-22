@@ -13,9 +13,8 @@ import { Type, Transform } from 'class-transformer';
 export class ReqSendEmailToCustomerDto {
   @ApiProperty()
   @IsNotEmpty()
-  @IsString({ each: true })
-  @IsArray()
-  readonly clientEmail: string[];
+  @IsString()
+  readonly clientEmail: string;
 
   // @Transform(({ value }) => JSON.parse(value))
   @ApiProperty()
