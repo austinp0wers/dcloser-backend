@@ -1,3 +1,4 @@
+import { CustomInternalException } from './../../exceptions/customInternal.exception';
 import { CustomBadRequestException } from './../../exceptions/customBadRequest.exception';
 import { CustomerCompanyRepository } from './../customerCompany/customerCompany.repository';
 import { ProductsOfferedRepository } from './../product/offeredProducts/productsOffered.repository';
@@ -10,6 +11,7 @@ import { ProposalEntity } from './proposal.entity';
 import { SaveProposalDto } from './dtos/saveProposal.dto';
 import { ProposalRepository } from './proposal.repository';
 import { Injectable } from '@nestjs/common';
+
 @Injectable()
 export class ProposalService {
   constructor(
@@ -53,7 +55,6 @@ export class ProposalService {
     business_id: number,
     business_user_id: string,
   ) {
-    console.log('proposalBody.customer_company_rep', typeof proposalBody);
     const saveProposalDto: SaveProposalDto = {
       customer_company_rep: proposalBody['customer_company_rep'],
       customer_company_id: proposalBody['customer_company_id'],
@@ -66,7 +67,6 @@ export class ProposalService {
       status: 'SENT',
     };
     const proposal: ProposalEntity = ProposalEntity.create(saveProposalDto);
-    console.log('proposal', proposal);
     const updateProposalResult = await this.proposalRepo.saveProposal(proposal);
 
     // products_offered DB에 선택된 제품들 저장하기.
@@ -101,7 +101,7 @@ export class ProposalService {
         return [];
       }
     } catch (err) {
-      console.log(err.message);
+      throw new CustomInternalException(err);
     }
 
     try {
@@ -112,7 +112,7 @@ export class ProposalService {
         userNameAndId.set(userNameList[i].id, userNameList[i].name);
       }
     } catch (err) {
-      console.log(err.message);
+      throw new CustomInternalException(err);
     }
 
     try {
@@ -126,7 +126,7 @@ export class ProposalService {
         );
       }
     } catch (err) {
-      console.log(err.message);
+      throw new CustomInternalException(err);
     }
 
     for (let i = 0; i < proposalList.length; i++) {
