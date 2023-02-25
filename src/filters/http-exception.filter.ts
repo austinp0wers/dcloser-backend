@@ -12,12 +12,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
   constructor(private slackService: SlackService) {}
   catch(exception, host: ExecutionContext) {
     let response = null;
+    const context = host.switchToHttp();
+    response = context.getResponse<Response>();
     try {
-      const context = host.switchToHttp();
-      response = context.getResponse<Response>();
       const status = (exception.getStatus && exception.getStatus()) || 500;
       const exceptionRes = exception.getResponse();
-      const headers = exceptionRes.headers;
       const errorLog: string = JSON.stringify(exceptionRes.errorLog) || '';
       const errorMsg =
         exceptionRes.customErrorMsg ||
@@ -25,7 +24,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
         HttpExceptionFilter.getErrorMsg(status);
       const success: boolean = exceptionRes.success === true;
       const customCode = exceptionRes.code || '';
-      console.log('response.req.originalUrl', response.req);
 
       let popup: string;
       if (typeof errorLog === 'string' && errorLog.includes('popup')) {
@@ -62,16 +60,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
           popup = t_response.err
             ? t_response.err.popup || t_response.err.message || t_response.err
             : '';
-          // popup = t_response.err.message ? t_response.err.message : '';
         }
       }
 
-      // 에러 로그 기록
-      // if (errorLog) {
-      //   console.log(errorLog);
-      // }
-
-      //   if (exceptionRes.noti) {
       const errorLine: string = exceptionRes.errorLine || '';
       this.slackService.sendErrorMessage(
         this.slackService.getMessgeContents({
@@ -84,7 +75,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
           exception: exceptionRes.error,
         }),
       );
-      //   }
 
       const resObj = {
         code: customCode ? customCode : status,
@@ -97,6 +87,17 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
       return response.status(status).json(resObj);
     } catch (err) {
+      this.slackService.sendErrorMessage(
+        this.slackService.getMessgeContents({
+          headers: response.req.headers,
+          body: JSON.stringify(response.req.body),
+          method: response.req.method,
+          // errorLine,
+          url: response.req.originalUrl,
+          // exception: exceptionRes.error,
+        }),
+      );
+
       console.log(err);
 
       return response.status(500).json({
