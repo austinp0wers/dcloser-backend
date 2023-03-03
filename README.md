@@ -12,7 +12,6 @@
 
 <hr>
 
-
 <h2>D.CLOSER의 핵심 기능</h2>
 
 <h3>견적서 작성 및 관리</h3>
@@ -24,6 +23,4 @@
 <br/>
 
 테이블 구성은 아래와 같습니다.
-![ERD](./public/dcloser_erd.png)
-
-
+![ERD](./public/dcloser.png)
