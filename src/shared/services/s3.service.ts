@@ -13,7 +13,7 @@ export class S3Service {
     });
   }
 
-  async uploadFile(file, fileKey) {
+  async uploadFile(file: Buffer, fileKey) {
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: fileKey,
