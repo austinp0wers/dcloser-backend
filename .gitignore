@@ -37,4 +37,3 @@ lerna-debug.log*
 .env
 docker-compose.*
 dbData
-/public
