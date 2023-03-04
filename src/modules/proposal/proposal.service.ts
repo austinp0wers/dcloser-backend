@@ -5,7 +5,6 @@ import { ProductsOfferedRepository } from './../product/offeredProducts/products
 import { UserEntity } from './../user/user.entity';
 import { UserRepository } from './../user/user.repository';
 import { OldProposalRepository } from './oldProposal/oldProposal.repository';
-import { InsertOldProposalDto } from './oldProposal/dtos/insertOldProposal.dto';
 import { ReqCreateProposalDto } from './dtos/request/create.request.proposal.dto';
 import { ProposalEntity } from './proposal.entity';
 import { SaveProposalDto } from './dtos/saveProposal.dto';
