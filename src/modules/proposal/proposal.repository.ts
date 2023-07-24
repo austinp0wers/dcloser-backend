@@ -22,7 +22,6 @@ export class ProposalRepository {
   }
 
   public async saveProposal(proposalBody: ProposalEntity): Promise<any> {
-    console.log('proposalBody', proposalBody);
     return await this.proposalRepository
       .createQueryBuilder()
       .insert()

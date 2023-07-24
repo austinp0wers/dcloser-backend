@@ -128,6 +128,8 @@ export class ProposalService {
       throw new CustomInternalException(err);
     }
 
+    console.log('proposalList', proposalList);
+
     for (let i = 0; i < proposalList.length; i++) {
       responseDto = { ...proposalList[i] };
       const products_name = await this.productsOfferedRepo.findByProposalId(
