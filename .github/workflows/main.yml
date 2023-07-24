@@ -28,6 +28,9 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: aws cli
+        run: aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 728796463735.dkr.ecr.ap-northeast-2.amazonaws.com
+
       - name: Build and tag Docker image
         run: |
           docker build -f Dockerfile -t $ECR_REPOSITORY:${GITHUB_SHA::7} -t $ECR_REPOSITORY:latest .
