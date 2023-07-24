@@ -32,8 +32,7 @@ jobs:
         run: aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 728796463735.dkr.ecr.ap-northeast-2.amazonaws.com
 
       - name: Build and tag Docker image
-        run: |
-          docker build -f Dockerfile -t $ECR_REPOSITORY:${GITHUB_SHA::7} -t $ECR_REPOSITORY:latest .
+        run: docker build -f Dockerfile -t 728796463735.dkr.ecr.ap-northeast-2.amazonaws.com/$ECR_REPOSITORY:${GITHUB_SHA::7} -t 728796463735.dkr.ecr.ap-northeast-2.amazonaws.com/$ECR_REPOSITORY:latest .
 
       - name: Push Docker image to Amazon ECR
-        run: docker push -a 728796463735.dkr.ecr.ap-northeast-2.amazonaws.com/dcloser-core
+        run: docker push -a 728796463735.dkr.ecr.ap-northeast-2.amazonaws.com/$ECR_REPOSITORY
