@@ -26,6 +26,10 @@ export class ProductsOfferedRepository {
         }),
       );
 
+    if (subQuery.length === 0) {
+      return []; // or handle the empty scenario as needed
+    }
+
     return await this.ProductRepo.createQueryBuilder('products')
       .where('products.id IN (:...productIds)', {
         productIds: await subQuery,

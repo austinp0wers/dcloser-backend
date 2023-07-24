@@ -67,7 +67,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       this.slackService.sendErrorMessage(
         this.slackService.getMessgeContents({
           headers: response.req.headers,
-          errorMessage: exceptionRes.message[0],
+          errorMessage: exceptionRes.message ? exceptionRes.message[0] : '',
           body: JSON.stringify(response.req.body),
           method: response.req.method,
           errorLine,
