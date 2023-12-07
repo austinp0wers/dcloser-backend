@@ -49,5 +49,14 @@
 
 ## 아키텍처
 
-기본적으로 Nest에서 제공하는 Dependency Injection을 사용하였으며
+기본적으로 Nest 에서 제공하는 Dependency Injection을 사용하였으며
 모듈 단위기준은, Microservice로 분리를 한다고 하였을떄 로직적으로 영향이없게 설계를 하였습니다.
+
+최대한 Nest.js 프레임워크에서 설명하는 Request 싸이클에서 맞는 stage들에 맞는 로직들을 넣으려고 하였습니다.
+예를 들어 
+처음API 요청이 들어오면 Middleware에서 권한검증 -> 
+로직 수행 중 에러 발생->
+Error interceptor를 통한 error custom에러 객체로 형태변환 -> 
+filter에서 custom error를 최종적으로 처리.
+
+비즈니스적으로 확장을 할 것을 고려하였을때, Payments 모듈이 들어오게 되면 modules directory에 추가만 하면 됩니다.
