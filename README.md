@@ -20,7 +20,34 @@
 <li>D.CLOSER는 사용자 친화적인 UI/UX로 사용이 간편하며, 기업 규모에 상관없이 모든 B2B 영업조직에게 적용할 수 있습니다. 또한, 클라우드 기반 SaaS 서비스이기 때문에, 보안성과 가용성이 뛰어나며, 이를 통해 사용자는 언제 어디서든 서비스를 이용할 수 있습니다.</li>
 
 <hr>
-<br/>
 
-테이블 구성은 아래와 같습니다.
+## 폴더 구조
+
+    ├── src
+    │   ├── common                  # 공통적인 코드베이스 로직, 혹은 enum이 저장되어 있는 폴더 입니다.
+    │   ├── database        
+    │       └── migrations          # DB migration 스크립트가 포함되어 있는 폴더 입니다.
+    │   ├── exceptions              # 공통적으로 사용될 에러 객체들이 저장되어 있는 폴더 입니다.
+    │   ├── filters                 # Filter들이 저장되어 있는 폴더입니다.
+    │   ├── interceptors            # Interceptor들이 저장되어 있는 폴더 입니다.
+    │   ├── middlewares             # Middleware들이 포함되어 있는 폴더 입니다.
+    │   └── modules                 # module, controller, service, repository가 포함되어 있는 폴더입니다.
+    │       ├── auth                # 로그인및 인증관련 모듈 입니다.
+    │       ├── customerCompany     # 고객사 관련 API들과 로직이 포함되어있는 모듈 입니다.
+    │       ├── product             # 제품 관련 API와 로직을 처리하는 모듈 입니다.
+    │       ├── proposal            # 견적서 관련 API들이 포함되어 있는 모듈입니다.
+    │       └── user                # 고객 관련 API들이 포함되어 있는 모듈입니다.
+    │   └── shared                  # 사용하는 Configuration들과, slack 서비스, swagger 셋업 관련 폴더 입니다.
+    ├── README.md
+    └── packages.json
+
+
+
+## ERD
 ![ERD](./public/dcloser.png)
+
+
+## 아키텍처
+
+기본적으로 Nest에서 제공하는 Dependency Injection을 사용하였으며
+모듈 단위기준은, Microservice로 분리를 한다고 하였을떄 로직적으로 영향이없게 설계를 하였습니다.
